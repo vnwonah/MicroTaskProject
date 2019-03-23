@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Data", "MT-NETCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Common", "MT-NetCore-Common\MT-NetCore-Common.csproj", "{2032A0E5-4441-4F08-AB08-AD6E494B69A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Utils", "MT-NetCore-Utils\MT-NetCore-Utils.csproj", "{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +23,14 @@ Global
 		{2032A0E5-4441-4F08-AB08-AD6E494B69A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2032A0E5-4441-4F08-AB08-AD6E494B69A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2032A0E5-4441-4F08-AB08-AD6E494B69A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5CD277B-C674-4279-872A-BB7C8BF6DD63} = {2AC0F0B5-1DF1-4B17-A639-3E2221A10CDC}
 		{2032A0E5-4441-4F08-AB08-AD6E494B69A5} = {2AC0F0B5-1DF1-4B17-A639-3E2221A10CDC}
+		{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3} = {2AC0F0B5-1DF1-4B17-A639-3E2221A10CDC}
 	EndGlobalSection
 EndGlobal

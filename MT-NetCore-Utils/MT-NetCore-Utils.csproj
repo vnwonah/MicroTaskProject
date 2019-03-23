@@ -5,4 +5,10 @@
     <RootNamespace>MT_NetCore_Utils</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.SqlDatabase.ElasticScale.Client" Version="2.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Sharding.cs" />
+  </ItemGroup>
 </Project>
