@@ -5,7 +5,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServices", "WebServices"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Data", "MT-NETCore-Data\MT-NetCore-Data.csproj", "{F5CD277B-C674-4279-872A-BB7C8BF6DD63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Common", "MT-NETCore-Data\MT-NetCore-Common\MT-NetCore-Common.csproj", "{2032A0E5-4441-4F08-AB08-AD6E494B69A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Common", "MT-NetCore-Common\MT-NetCore-Common.csproj", "{2032A0E5-4441-4F08-AB08-AD6E494B69A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

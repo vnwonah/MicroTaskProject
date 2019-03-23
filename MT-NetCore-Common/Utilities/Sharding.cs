@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
+using MT_NetCore_Common.Interfaces;
 using MTNetCoreData.Entities;
 
 namespace MT_NetCore_Common.Utilities
@@ -12,9 +13,9 @@ namespace MT_NetCore_Common.Utilities
     public class Sharding
     {
         #region Private declarations
-        //private static IUtilities _utilities;
-        //private static ICatalogRepository _catalogRepository;
-        //private static ITenantRepository _tenantRepository;
+        private static IUtilities _utilities;
+        private static ICatalogRepository _catalogRepository;
+        private static ITenantRepository _tenantRepository;
         #endregion
 
         #region Public Properties
@@ -119,7 +120,7 @@ namespace MT_NetCore_Common.Utilities
                     var pointMapping = ShardMap.CreatePointMapping(tenantId, shard);
 
                     //convert from int to byte[] as tenantId has been set as byte[] in Tenants entity
-                    //var key = _utilities.ConvertIntKeyToBytesArray(pointMapping.Value);
+                    var key = _utilities.ConvertIntKeyToBytesArray(pointMapping.Value);
 
                     //get tenant's venue name
                     //var venueDetails = await _tenantRepository.GetVenueDetails(tenantId);
@@ -127,9 +128,8 @@ namespace MT_NetCore_Common.Utilities
                     //add tenant to Tenants table
                     var tenant = new Tenant
                     {
-                        ServicePlan = servicePlan,
-                        TenantId = key,
-                        TenantName = venueDetails.VenueName
+                        Id = key,
+                        //TenantName = venueDetails.VenueName
                     };
 
                     _catalogRepository.Add(tenant);

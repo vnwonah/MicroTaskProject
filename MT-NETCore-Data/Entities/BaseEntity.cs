@@ -5,7 +5,7 @@ namespace MTNetCoreData.Entities
 {
     public class BaseEntity
     {
-        public string Id { get; set; }
+        public byte[] Id { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTimeOffset CreatedAt { get; set; }

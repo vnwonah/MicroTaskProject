@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MT_NetCore_Common.Utilities;
+
 namespace MT_NetCore_Common.Interfaces
 {
     public interface IUtilities

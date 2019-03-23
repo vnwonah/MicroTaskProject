@@ -15,6 +15,6 @@
     <Folder Include="Mapping\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MT-NetCore-Data.csproj" />
+    <ProjectReference Include="..\MT-NETCore-Data\MT-NetCore-Data.csproj" />
   </ItemGroup>
 </Project>
