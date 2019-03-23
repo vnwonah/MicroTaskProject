@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace MT_NetCore_Data.CatalogDB
 {
-    public class CatalogContextFactory : IDesignTimeDbContextFactory<CatalogDbContext>
+    public class CatalogDbContextFactory : IDesignTimeDbContextFactory<CatalogDbContext>
     {
         public CatalogDbContext CreateDbContext(string[] args)
         {

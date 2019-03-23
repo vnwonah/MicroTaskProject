@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using JetBrains.Annotations;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.EntityFrameworkCore;
 using MT_NetCore_Data.Entities;
@@ -17,6 +18,12 @@ namespace MT_NetCore_Data.TenantsDB
 
         }
 
+        public TenantDbContext(DbContextOptions options) 
+            : base(options)
+        {
+        }
+
+
         /// <summary>
         /// Creates the DDR (Data Dependent Routing) connection.
         /// </summary>
@@ -31,7 +38,7 @@ namespace MT_NetCore_Data.TenantsDB
 
             // Set TenantId in SESSION_CONTEXT to shardingKey to enable Row-Level Security filtering
             SqlCommand cmd = sqlConn.CreateCommand();
-            cmd.CommandText = @"exec sp_set_session_context @key=N'TenantId', @value=@shardingKey";
+            cmd.CommandText = @"exec sp_set_session_context @key=N'Id', @value=@shardingKey";
             cmd.Parameters.AddWithValue("@shardingKey", shardingKey);
             cmd.ExecuteNonQuery();
 
