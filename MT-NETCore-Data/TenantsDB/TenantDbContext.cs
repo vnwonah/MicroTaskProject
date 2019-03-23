@@ -2,11 +2,15 @@
 using System.Data.SqlClient;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.EntityFrameworkCore;
+using MT_NetCore_Data.Entities;
 
-namespace MTNetCoreData.TenantsDB
+namespace MT_NetCore_Data.TenantsDB
 {
     public partial class TenantDbContext : DbContext
     {
+        public virtual DbSet<Form> Forms { get; set; }
+        public virtual DbSet<Submission> Submissions { get; set; }
+
         public TenantDbContext(ShardMap shardMap, int shardingKey, string connectionStr) :
            base(CreateDdrConnection(shardMap, shardingKey, connectionStr))
         {

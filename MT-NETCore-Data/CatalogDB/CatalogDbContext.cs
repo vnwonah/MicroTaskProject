@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MTNetCoreData.Entities;
+using MT_NetCore_Data.Entities;
 
-namespace MTNetCoreData.CatalogDB
+namespace MT_NetCore_Data.CatalogDB
 {
     public partial class CatalogDbContext : DbContext
     {

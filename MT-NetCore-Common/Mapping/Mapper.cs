@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using MT_NetCore_Common.Models;
-using MTNetCoreData.Entities;
+using MT_NetCore_Data.Entities;
 
 namespace MT_NetCore_Common.Mapping
 {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using MT_NetCore_Common.Interfaces;
-using MTNetCoreData.Entities;
+using MT_NetCore_Data.Entities;
 
 namespace MT_NetCore_Common.Utilities
 {
