@@ -1,4 +1,4 @@
-﻿namespace MTNETStdData.Entities
+﻿namespace MTNetCoreData.Entities
 {
     public class Form : BaseEntity
     {

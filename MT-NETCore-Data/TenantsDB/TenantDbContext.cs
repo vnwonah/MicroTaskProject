@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.EntityFrameworkCore;
 
-namespace MTNETStdData.TenantsDB
+namespace MTNetCoreData.TenantsDB
 {
     public partial class TenantDbContext : DbContext
     {

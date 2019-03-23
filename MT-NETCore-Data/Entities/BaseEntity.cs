@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MTNETStdData.Entities
+namespace MTNetCoreData.Entities
 {
     public class BaseEntity
     {
