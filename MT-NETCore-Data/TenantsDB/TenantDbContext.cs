@@ -3,9 +3,9 @@ using System.Data.SqlClient;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.EntityFrameworkCore;
 
-namespace MTNETCoreData.TenantsDB
+namespace MTNETStdData.TenantsDB
 {
-    public class TenantDbContext : DbContext
+    public partial class TenantDbContext : DbContext
     {
         public TenantDbContext(ShardMap shardMap, int shardingKey, string connectionStr) :
            base(CreateDdrConnection(shardMap, shardingKey, connectionStr))
