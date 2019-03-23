@@ -18,6 +18,7 @@ namespace MT_NetCore_Data.TenantsDB
             builder.UseSqlServer(configuration.GetConnectionString("TenantDbConnection"));
 
             return new TenantDbContext(builder.Options);
+            
         }
     }
 }

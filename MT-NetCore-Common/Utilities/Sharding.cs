@@ -42,9 +42,9 @@ namespace MT_NetCore_Common.Utilities
         {
             try
             {
-                //_catalogRepository = catalogRepository;
-                //_tenantRepository = tenantRepository;
-                //_utilities = utilities;
+                _catalogRepository = catalogRepository;
+                _tenantRepository = tenantRepository;
+                _utilities = utilities;
 
                 // Deploy shard map manager
                 // if shard map manager exists, refresh content, else create it, then add content
