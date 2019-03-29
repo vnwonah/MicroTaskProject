@@ -18,5 +18,14 @@
     <Folder Include="Ninject\" />
     <Folder Include="Extensions\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
+    <Folder Include="Models\" />
+    <Folder Include="Models\AuthModels\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Models\ResponseModels\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MT-NETCore-Data\MT-NetCore-Data.csproj" />
   </ItemGroup>
 </Project>
