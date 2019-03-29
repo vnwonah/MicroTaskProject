@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MT_NetCore_API.Interfaces;
 
 namespace MT_NetCore_API.Controllers
 {
@@ -10,6 +11,13 @@ namespace MT_NetCore_API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ITestService _testService;
+
+        public ValuesController(ITestService testService)
+        {
+            _testService = testService;
+            var str = testService.GetData();
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
