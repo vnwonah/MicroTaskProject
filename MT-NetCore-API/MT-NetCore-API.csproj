@@ -11,11 +11,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="4.5.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Ninject\" />
     <Folder Include="Extensions\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
@@ -24,8 +24,14 @@
     <Folder Include="Helpers\" />
     <Folder Include="Models\ResponseModels\" />
     <Folder Include="Enums\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MT-NETCore-Data\MT-NetCore-Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Interfaces\ITestService.cs" />
+    <Compile Remove="Extensions\AspNetCoreExtensions.cs" />
+    <Compile Remove="Extensions\ApplicationBuilderExtensions.cs" />
   </ItemGroup>
 </Project>

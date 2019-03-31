@@ -2,34 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MT_NetCore_API.Interfaces;
 
 namespace MT_NetCore_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(Policy = "ApiUser")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Produces("application/json")]
     public class ValuesController : ControllerBase
     {
-        private readonly ITestService _testService;
 
-        public ValuesController(ITestService testService)
+        public ValuesController()
         {
-            _testService = testService;
-            var str = testService.GetData();
         }
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(new string[] { "value1", "value2" });
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(new { value = "value" });
         }
 
         // POST api/values

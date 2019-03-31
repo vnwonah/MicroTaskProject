@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MT_NetCore_API.Models.ResponseModels
 {
-    public class BaseResponse<T>
+    public abstract class BaseResponse
     {
         [JsonProperty("status")]
         public ResponseStatus Status { get; set; } = ResponseStatus.Error;
@@ -11,7 +11,6 @@ namespace MT_NetCore_API.Models.ResponseModels
         [JsonProperty("message")]
         public string Message { get; set; } = "An Error Occured";
 
-        [JsonProperty("data")]
-        public T Data { get; set; }
+
     }
 }

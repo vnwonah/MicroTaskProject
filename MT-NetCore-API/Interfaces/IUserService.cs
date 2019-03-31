@@ -1,4 +1,4 @@
-﻿using MT_NetCore_API.Models.Auth;
+﻿using MT_NetCore_API.Models.AuthModels;
 using MT_NetCore_Data.IdentityDB;
 
 namespace MT_NetCore_API.Interfaces

@@ -1,46 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MT_NetCore_API.Extensions;
+using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
+using MT_NetCore_API.Models.AuthModels;
+using MT_NetCore_API.Services;
 using MT_NetCore_Data.IdentityDB;
-using Ninject;
-using Ninject.Activation;
-using Ninject.Infrastructure.Disposal;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MT_NetCore_API
 {
     public class Startup
     {
+        private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-        private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
-        private IKernel Kernel { get; set; }
-
-        private object Resolve(Type type) => Kernel.Get(type);
-        private object RequestScope(IContext context) => scopeProvider.Value;
-
-        private sealed class Scope : DisposableObject { }
 
         public IConfiguration Configuration { get; }
 
@@ -49,50 +41,92 @@ namespace MT_NetCore_API
         {
             services.AddCors();
 
-            services.AddAuthentication(config =>
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+            services.Configure<JwtIssuerOptions>(options =>
             {
-                config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(config =>
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
+
+            var tokenValidationParameters = new TokenValidationParameters
             {
-                config.RequireHttpsMetadata = false;
-                config.SaveToken = true;
-                config.TokenValidationParameters = new TokenValidationParameters
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                ValidateAudience = true,
+                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(configureOptions =>
+            {
+                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.TokenValidationParameters = tokenValidationParameters;
+                configureOptions.SaveToken = true;
+            });
+
+            // api user claim policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+            });
+
+            services.AddOptions();
+
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+            services.AddDbContext<AuthenticationDbContext>(options => options.UseInMemoryDatabase("mfaapidb"));
+
+            // add identity
+            var builder = services.AddIdentityCore<ApplicationUser>(o =>
+            {
+                // configure identity options
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 6;
+            });
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<AuthenticationDbContext>().AddDefaultTokenProviders();
+
+
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info { Title = "MobileForms API", Version = "v1" });
+                options.AddSecurityDefinition("oauth2", new ApiKeyScheme
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("XL51Ms8Se2N0EvdzjZQ7")), //TODO: DEMO KEY, Replace in Prod
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+                    Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+                    In = "header",
+                    Name = "Authorization",
+                    Type = "apiKey"
+                });
+
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+
             });
 
-            services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("mfaapidb"));
-            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
-            {
-                config.SignIn.RequireConfirmedEmail = false;
-
-            })
-            .AddEntityFrameworkStores<IdentityDbContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "MobileForms API", Version = "v1" });
-            });
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
-            services.AddCustomControllerActivation(Resolve);
-            services.AddCustomViewComponentActivation(Resolve);
+            services.AddMvc();
+            services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IJwtFactory, JwtFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            this.Kernel = this.RegisterApplicationComponents(app);
 
             if (env.IsDevelopment())
             {
@@ -104,40 +138,39 @@ namespace MT_NetCore_API
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseExceptionHandler(
+                builder =>
+                {
+                    builder.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                            var error = context.Features.Get<IExceptionHandlerFeature>(); 
+                            if (error != null)
+                            {
+                                //context.Response.AddApplicationError(error.Error.Message);
+                                await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                                }
+                            });
+                         }
+               );
 
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseCors(x => x
                .AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader());
-            app.UseAuthentication();
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MobileForms API");
                 c.RoutePrefix = string.Empty;
             });
+            app.UseAuth();
             app.UseMvc();
-        }
-
-        private IKernel RegisterApplicationComponents(IApplicationBuilder app)
-        {
-            // IKernelConfiguration config = new KernelConfiguration();
-            var kernel = new StandardKernel();
-
-            // Register application services
-            foreach (var ctrlType in app.GetControllerTypes())
-            {
-                kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
-            }
-
-            // This is where our bindings are configurated
-            kernel.Bind<ITestService>().To<TestService>().InScope(RequestScope);
-
-            // Cross-wire required framework services
-            kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
-
-            return kernel;
         }
     }
 }
