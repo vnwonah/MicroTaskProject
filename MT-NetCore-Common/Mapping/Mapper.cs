@@ -8,7 +8,7 @@ namespace MT_NetCore_Common.Mapping
     public static class Mapper
     {
         #region Entity To Model Mapping
-        public static TenantModel ToTenantModel(this Tenant tenantEntity)
+        public static TenantModel ToTenantModel(this Team tenantEntity)
         {
             string tenantIdInString = BitConverter.ToString(tenantEntity.Id);
             tenantIdInString = tenantIdInString.Replace("-", "");

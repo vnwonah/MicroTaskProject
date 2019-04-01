@@ -66,7 +66,19 @@ namespace MT_NetCore_API.Controllers
                     }
                 });
             }
-            return new OkObjectResult("Account created");
+            return Ok(new RegisterResponse
+            {
+                Status = ResponseStatus.Success,
+                Message = "Account Created Successfully, Please Check Email to Activate Account",
+                Data = new RegisterData
+                {
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    
+                }
+
+            });
         }
 
         [AllowAnonymous]

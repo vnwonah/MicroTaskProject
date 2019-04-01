@@ -21,13 +21,16 @@ namespace MT_NetCore_API.Models.AuthModels
 
         [Required]
         [RegularExpression("^[a-z]{3,10}$", ErrorMessage = "Please enter a valid name with 1 - 10 letters")]
+        [JsonProperty("first_name")]
         public string FirstName { get; set; }
 
         [Required]
         [RegularExpression("^[a-z]{3,10}$", ErrorMessage = "Please enter a valid name with 1 - 10 letters")]
+        [JsonProperty("last_name")]
         public string LastName { get; set; }
 
         [Required]
+        [JsonProperty("phone_number")]
         public string PhoneNumber { get; set; }
     }
 }

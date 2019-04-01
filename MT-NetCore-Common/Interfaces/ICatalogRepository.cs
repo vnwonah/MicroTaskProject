@@ -10,6 +10,6 @@ namespace MT_NetCore_Common.Interfaces
     {
         Task<List<TenantModel>> GetAllTenants();
         Task<TenantModel> GetTenant(string tenantName);
-        bool Add(Tenant tenant);
+        bool Add(Team tenant);
     }
 }
