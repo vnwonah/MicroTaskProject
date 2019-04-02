@@ -1,6 +1,6 @@
 ﻿namespace MT_NetCore_Data.Entities
 {
-    public class Team : BaseEntity
+    public class Tenant : BaseEntity
     {
         public string Name { get; set; }
     }

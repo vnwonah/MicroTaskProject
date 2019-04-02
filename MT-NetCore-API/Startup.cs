@@ -26,7 +26,7 @@ using Swashbuckle.AspNetCore.Swagger;
 
 
 /*=================================================
- *          Essential Commands
+ *          Essential Commands - Ignore & Perish
  * ================================================
  * Migrations are Added Per DB Context
  * 

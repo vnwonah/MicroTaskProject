@@ -126,7 +126,7 @@ namespace MT_NetCore_Common.Utilities
                     //var venueDetails = await _tenantRepository.GetVenueDetails(tenantId);
 
                     //add tenant to Tenants table
-                    var tenant = new Team
+                    var tenant = new Tenant
                     {
                         Id = key,
                         //TenantName = venueDetails.VenueName
