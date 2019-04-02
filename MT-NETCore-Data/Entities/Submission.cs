@@ -9,5 +9,7 @@ namespace MT_NetCore_Data.Entities
         public string SubmissionJson { get; set; }
 
         public long SubmissionPosition { get; set; }
+
+        public Location Location { get; set; }
     }
 }

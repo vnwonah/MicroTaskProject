@@ -11,6 +11,9 @@ namespace MT_NetCore_Data.Entities
         public long SubmissionCount { get; set; }
 
         public string ProjectId { get; set; }
+        
+        public List<User> Supervisors { get; set; }
 
     }
+
 }

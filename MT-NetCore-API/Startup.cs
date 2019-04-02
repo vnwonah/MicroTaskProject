@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +19,25 @@ using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
 using MT_NetCore_API.Services;
+using MT_NetCore_Data.CatalogDB;
 using MT_NetCore_Data.IdentityDB;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
+
+
+/*=================================================
+ *          Essential Commands
+ * ================================================
+ * Migrations are Added Per DB Context
+ * 
+ * Sample Micgration Command: 
+ * `dotnet ef migrations add "Initial Migration" -s ../MT-NetCore-API --context AuthenticationDbContext`
+ * -------------------------------------------------
+ * Database is Updated Per DB Context
+ * 
+ * Sample Update Command:
+ * `dotnet ef database update -s ../MT-NetCore-API --context AuthenticationDbContext`
+ */
 
 namespace MT_NetCore_API
 {
@@ -32,9 +49,13 @@ namespace MT_NetCore_API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ReadAppConfig(configuration);
         }
 
         public IConfiguration Configuration { get; }
+        public static DatabaseConfig DatabaseConfig { get; set; }
+        public static CatalogConfig CatalogConfig { get; set; }
+        public static TenantServerConfig TenantServerConfig { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -87,7 +108,21 @@ namespace MT_NetCore_API
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-            services.AddDbContext<AuthenticationDbContext>(options => options.UseInMemoryDatabase("mfaapidb"));
+
+            //Database Contexts
+            services.AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(GetCatalogConnectionString(CatalogConfig, DatabaseConfig),
+                sqlServerOptions =>
+                {
+                    sqlServerOptions.MigrationsAssembly("MT-NetCore-Data");
+                }
+            ));
+
+            services.AddDbContext<CatalogDbContext>(options => options.UseSqlServer(GetCatalogConnectionString(CatalogConfig, DatabaseConfig),
+                sqlServerOptions =>
+                {
+                    sqlServerOptions.MigrationsAssembly("MT-NetCore-Data");
+                }
+            ));
 
             // add identity
             var builder = services.AddIdentityCore<ApplicationUser>(o =>
@@ -124,6 +159,7 @@ namespace MT_NetCore_API
             services.AddSingleton<IJwtFactory, JwtFactory>();
         }
 
+      
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -172,5 +208,53 @@ namespace MT_NetCore_API
             app.UseAuth();
             app.UseMvc();
         }
+
+        private string GetCatalogConnectionString(CatalogConfig catalogConfig, DatabaseConfig databaseConfig)
+        {
+            return $"Server=tcp:{catalogConfig.CatalogServer},1433;Database={catalogConfig.CatalogDatabase};User ID={databaseConfig.DatabaseUser};Password={databaseConfig.DatabasePassword};Trusted_Connection=False;Encrypt=False;";
+        }
+
+        private void ReadAppConfig(IConfiguration configuration)
+        {
+
+            /*
+             * 
+             *  },
+  "DatabaseOptions": {
+    "ConnectionTimeOut": "100",
+    "CatalogDatabase": "mfacatalog",
+    "CatalogServer": "127.0.0.1",
+    "DatabasePassword": "Dev@12345",
+    "DatabaseServerPort": "1433",
+    "DatabaseUser": "SA",
+    "ServicePlan": "Standard",
+    "TenantServer": "127.0.0.1",
+    "TenantDatabase": "mfatenants"
+             * 
+             */
+            DatabaseConfig = new DatabaseConfig
+            {
+                DatabasePassword = Configuration["DatabaseOptions:DatabasePassword"],
+                DatabaseUser = Configuration["DatabaseOptions:DatabaseUser"],
+                DatabaseServerPort = Int32.Parse(Configuration["DatabaseOptions:DatabaseServerPort"]),
+                SqlProtocol = SqlProtocol.Tcp,
+                ConnectionTimeOut = Int32.Parse(Configuration["DatabaseOptions:ConnectionTimeOut"]),
+            };
+
+            CatalogConfig = new CatalogConfig
+            {
+                ServicePlan = Configuration["DatabaseOptions:ServicePlan"],
+                CatalogDatabase = Configuration["DatabaseOptions:CatalogDatabase"],
+                CatalogServer = Configuration["DatabaseOptions:CatalogServer"], // + ".database.windows.net"
+            };
+
+            TenantServerConfig = new TenantServerConfig
+            {
+                TenantServer = Configuration["DatabaseOptions:CatalogServer"],// + ".database.windows.net",
+                TenantDatabase = Configuration["DatabaseOptions:TenantDatabase"],
+
+            };
+        }
+
     }
 }

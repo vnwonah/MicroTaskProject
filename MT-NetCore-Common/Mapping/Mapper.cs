@@ -16,7 +16,7 @@ namespace MT_NetCore_Common.Mapping
             return new TenantModel
             {
                 TenantId = ConvertByteKeyIntoInt(tenantEntity.Id),
-                TenantName = tenantEntity.TenantName.ToLower().Replace(" ", ""),
+                //TenantName = tenantEntity.TenantName.ToLower().Replace(" ", ""),
                 TenantIdInString = tenantIdInString
             };
         }

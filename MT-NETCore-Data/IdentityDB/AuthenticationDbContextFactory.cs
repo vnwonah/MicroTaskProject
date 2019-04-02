@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace MT_NetCore_Data.IdentityDB
 {
+    /*
     public class AuthenticationDbContextFactory : IDesignTimeDbContextFactory<AuthenticationDbContext>
     {
         public AuthenticationDbContext CreateDbContext(string[] args)
@@ -16,4 +17,5 @@ namespace MT_NetCore_Data.IdentityDB
 
         }
     }
+    */
 }

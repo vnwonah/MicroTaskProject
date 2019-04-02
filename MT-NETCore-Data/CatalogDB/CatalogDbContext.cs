@@ -5,7 +5,7 @@ namespace MT_NetCore_Data.CatalogDB
 {
     public partial class CatalogDbContext : DbContext
     {
-        public virtual DbSet<Team> Tenants { get; set; }
+        public virtual DbSet<Team> Teams { get; set; }
 
         public CatalogDbContext(DbContextOptions<CatalogDbContext> options) :
          base(options)
