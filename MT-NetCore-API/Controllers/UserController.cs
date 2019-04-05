@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -58,8 +59,8 @@ namespace MT_NetCore_API.Controllers
             {
                 return BadRequest(new ErrorResponse
                 {
-                    Status = ResponseStatus.Success,
-                    Message = "Login Failed",
+                    Status = ResponseStatus.Error,
+                    Message = result.Errors.FirstOrDefault()?.Description,
                     Data = new ErrorData
                     {
                         ErrorDescription = "Your Email or Password is Incorrect"
@@ -93,7 +94,7 @@ namespace MT_NetCore_API.Controllers
                 {
                     return BadRequest(new ErrorResponse
                     {
-                        Status = ResponseStatus.Success,
+                        Status = ResponseStatus.Error,
                         Message = "Login Failed",
                         Data = new ErrorData
                         {
@@ -117,7 +118,7 @@ namespace MT_NetCore_API.Controllers
 
             return BadRequest(new ErrorResponse
             {
-                Status = ResponseStatus.Success,
+                Status = ResponseStatus.Error,
                 Message = "Login Failed",
                 Data = new ErrorData
                 {

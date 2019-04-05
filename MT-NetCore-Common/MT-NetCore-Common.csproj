@@ -13,6 +13,7 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Models\" />
     <Folder Include="Mapping\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MT-NETCore-Data\MT-NetCore-Data.csproj" />

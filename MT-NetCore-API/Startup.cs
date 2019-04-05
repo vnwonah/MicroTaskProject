@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,14 +20,19 @@ using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
 using MT_NetCore_API.Services;
+using MT_NetCore_Common.Interfaces;
+using MT_NetCore_Common.Repositories;
+using MT_NetCore_Common.Utilities;
 using MT_NetCore_Data.CatalogDB;
 using MT_NetCore_Data.IdentityDB;
+using MT_NetCore_Data.TenantsDB;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
+using static MT_NetCore_Common.Utilities.AppConfig;
 
 
 /*=================================================
- *          Essential Commands - Ignore & Perish
+ *          Essential Commands
  * ================================================
  * Migrations are Added Per DB Context
  * 
@@ -51,6 +57,10 @@ namespace MT_NetCore_API
             Configuration = configuration;
             ReadAppConfig(configuration);
         }
+        private static IUtilities _utilities;
+        private static ICatalogRepository _catalogRepository;
+        private static ITenantRepository _tenantRepository;
+
 
         public IConfiguration Configuration { get; }
         public static DatabaseConfig DatabaseConfig { get; set; }
@@ -108,7 +118,6 @@ namespace MT_NetCore_API
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-
             //Database Contexts
             services.AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(GetCatalogConnectionString(CatalogConfig, DatabaseConfig),
                 sqlServerOptions =>
@@ -122,6 +131,14 @@ namespace MT_NetCore_API
                 {
                     sqlServerOptions.MigrationsAssembly("MT-NetCore-Data");
                 }
+            ));
+
+            //Uncomment Before Running Migrations on Tenant Context.
+            services.AddDbContext<TenantDbContext>(options => options.UseSqlServer(GetTenantConnectionString(TenantServerConfig, DatabaseConfig),
+              sqlServerOptions =>
+              {
+                  sqlServerOptions.MigrationsAssembly("MT-NetCore-Data");
+              }
             ));
 
             // add identity
@@ -157,6 +174,18 @@ namespace MT_NetCore_API
             services.AddMvc();
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
+            //Add Application services
+            services.AddTransient<ICatalogRepository, CatalogRepository>();
+            services.AddTransient<ITenantRepository, TenantRepository>();
+            services.AddSingleton<ITenantRepository>(p => new TenantRepository(GetBasicSqlConnectionString()));
+            services.AddSingleton(Configuration);
+
+            //create instance of utilities class
+            services.AddTransient<IUtilities, Utilities>();
+            var provider = services.BuildServiceProvider();
+            _utilities = provider.GetService<IUtilities>();
+            _catalogRepository = provider.GetService<ICatalogRepository>();
+            _tenantRepository = provider.GetService<ITenantRepository>();
         }
 
       
@@ -207,6 +236,10 @@ namespace MT_NetCore_API
             });
             app.UseAuth();
             app.UseMvc();
+
+            //shard management
+            InitialiseShardMapManager();
+            _utilities.RegisterTenantShard(TenantServerConfig, DatabaseConfig, CatalogConfig);
         }
 
         private string GetCatalogConnectionString(CatalogConfig catalogConfig, DatabaseConfig databaseConfig)
@@ -214,24 +247,39 @@ namespace MT_NetCore_API
             return $"Server=tcp:{catalogConfig.CatalogServer},1433;Database={catalogConfig.CatalogDatabase};User ID={databaseConfig.DatabaseUser};Password={databaseConfig.DatabasePassword};Trusted_Connection=False;Encrypt=False;";
         }
 
+        private string GetTenantConnectionString(TenantServerConfig tenantServerConfig, DatabaseConfig databaseConfig)
+        {
+            return $"Server=tcp:{tenantServerConfig.TenantServer},1433;Database={tenantServerConfig.TenantDatabase};User ID={databaseConfig.DatabaseUser};Password={databaseConfig.DatabasePassword};Trusted_Connection=False;Encrypt=False;";
+        }
+
+        private void InitialiseShardMapManager()
+        {
+            var basicConnectionString = GetBasicSqlConnectionString();
+            SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder(basicConnectionString)
+            {
+                DataSource = DatabaseConfig.SqlProtocol + ":" + CatalogConfig.CatalogServer + "," + DatabaseConfig.DatabaseServerPort,
+                InitialCatalog = CatalogConfig.CatalogDatabase
+            };
+
+            var sharding = new Sharding(CatalogConfig.CatalogDatabase, connectionString.ConnectionString, _catalogRepository, _tenantRepository, _utilities);
+        }
+
+        private string GetBasicSqlConnectionString()
+        {
+            var connStrBldr = new SqlConnectionStringBuilder
+            {
+                UserID = DatabaseConfig.DatabaseUser,
+                Password = DatabaseConfig.DatabasePassword,
+                ApplicationName = "EntityFramework",
+                ConnectTimeout = DatabaseConfig.ConnectionTimeOut
+            };
+
+            return connStrBldr.ConnectionString;
+        }
+
         private void ReadAppConfig(IConfiguration configuration)
         {
-
-            /*
-             * 
-             *  },
-  "DatabaseOptions": {
-    "ConnectionTimeOut": "100",
-    "CatalogDatabase": "mfacatalog",
-    "CatalogServer": "127.0.0.1",
-    "DatabasePassword": "Dev@12345",
-    "DatabaseServerPort": "1433",
-    "DatabaseUser": "SA",
-    "ServicePlan": "Standard",
-    "TenantServer": "127.0.0.1",
-    "TenantDatabase": "mfatenants"
-             * 
-             */
+  
             DatabaseConfig = new DatabaseConfig
             {
                 DatabasePassword = Configuration["DatabaseOptions:DatabasePassword"],
@@ -255,6 +303,5 @@ namespace MT_NetCore_API
 
             };
         }
-
     }
 }

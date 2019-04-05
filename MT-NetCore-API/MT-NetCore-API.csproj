@@ -28,6 +28,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MT-NETCore-Data\MT-NetCore-Data.csproj" />
+    <ProjectReference Include="..\MT-NetCore-Common\MT-NetCore-Common.csproj" />
+    <ProjectReference Include="..\MT-NetCore-Utils\MT-NetCore-Utils.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Interfaces\ITestService.cs" />
