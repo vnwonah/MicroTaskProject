@@ -31,6 +31,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using static MT_NetCore_Common.Utilities.AppConfig;
 
 
+
 /*=================================================
  *          Essential Commands
  * ================================================
@@ -158,7 +159,7 @@ namespace MT_NetCore_API
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info { Title = "MobileForms API", Version = "v1" });
+                options.SwaggerDoc("v1", new Info { Title = "MobileForms API", Version = "v2.0.0" });
                 options.AddSecurityDefinition("oauth2", new ApiKeyScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
@@ -179,6 +180,7 @@ namespace MT_NetCore_API
             services.AddTransient<ITenantRepository, TenantRepository>();
             services.AddSingleton<ITenantRepository>(p => new TenantRepository(GetBasicSqlConnectionString()));
             services.AddSingleton(Configuration);
+
 
             //create instance of utilities class
             services.AddTransient<IUtilities, Utilities>();
@@ -234,6 +236,7 @@ namespace MT_NetCore_API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MobileForms API");
                 c.RoutePrefix = string.Empty;
             });
+            app.UseResponseWrapper();
             app.UseAuth();
             app.UseMvc();
 

@@ -12,7 +12,7 @@ namespace MT_NetCore_API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class ValuesController : ControllerBase
+    public class ValuesController : BaseController
     {
 
         public ValuesController()

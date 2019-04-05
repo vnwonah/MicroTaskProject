@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using MT_NetCore_API.Enums;
 using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
@@ -20,7 +18,7 @@ namespace MT_NetCore_API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
 
         private readonly UserManager<ApplicationUser> _userManager;
@@ -59,25 +57,14 @@ namespace MT_NetCore_API.Controllers
             {
                 return BadRequest(new ErrorResponse
                 {
-                    Status = ResponseStatus.Error,
-                    Message = result.Errors.FirstOrDefault()?.Description,
-                    Data = new ErrorData
-                    {
-                        ErrorDescription = "Your Email or Password is Incorrect"
-                    }
+                    ErrorDescription = "Your Email or Password is Incorrect"
                 });
             }
             return Ok(new RegisterResponse
             {
-                Status = ResponseStatus.Success,
-                Message = "Account Created Successfully, Please Check Email to Activate Account",
-                Data = new RegisterData
-                {
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    
-                }
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
 
             });
         }
@@ -94,36 +81,20 @@ namespace MT_NetCore_API.Controllers
                 {
                     return BadRequest(new ErrorResponse
                     {
-                        Status = ResponseStatus.Error,
-                        Message = "Login Failed",
-                        Data = new ErrorData
-                        {
-                            ErrorDescription = "Your Email or Password is Incorrect"
-                        }
+                        ErrorDescription = "Your Email or Password is Incorrect"
                     });
                 }
                 var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, model.Email, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
 
                 return Ok(new LoginResponse
                 {
-                    Status = ResponseStatus.Success,
-                    Message = "Login Successful",
-                    Data = new LoginData
-                    {
-                        Token = jwt
-                    }
-
+                    Token = jwt
                 });
             }
 
             return BadRequest(new ErrorResponse
             {
-                Status = ResponseStatus.Error,
-                Message = "Login Failed",
-                Data = new ErrorData
-                {
-                    ErrorDescription = "Your Email or Password is Incorrect"
-                }
+                ErrorDescription = "Your Email or Password is Incorrect"
             });
            
         }

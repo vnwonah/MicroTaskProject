@@ -3,13 +3,7 @@ using Newtonsoft.Json;
 
 namespace MT_NetCore_API.Models.ResponseModels
 {
-    public class RegisterResponse : BaseResponse
-    {
-        [JsonProperty("data")]
-        public RegisterData Data { get; set; }
-    }
-
-    public class RegisterData
+    public class RegisterResponse
     {
         [JsonProperty("email")]
         public string Email { get; set; }
@@ -20,4 +14,5 @@ namespace MT_NetCore_API.Models.ResponseModels
         [JsonProperty("last_name")]
         public string LastName { get; set; }
     }
+
 }
