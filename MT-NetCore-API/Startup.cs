@@ -175,6 +175,7 @@ namespace MT_NetCore_API
             services.AddMvc();
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
+            services.AddScoped<IUserService, UserService>();
             //Add Application services
             services.AddTransient<ICatalogRepository, CatalogRepository>();
             services.AddTransient<ITenantRepository, TenantRepository>();

@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Utils", "MT-NetC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-API", "MT-NetCore-API\MT-NetCore-API.csproj", "{E243B6F9-64D4-4E97-AF46-B07C0129C87A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D69480CD-F88F-4837-8575-C7CE083573BC}"
+	ProjectSection(SolutionItems) = preProject
+		NewTenantProcess.md = NewTenantProcess.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
