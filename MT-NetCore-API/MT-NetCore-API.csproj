@@ -26,6 +26,8 @@
     <Folder Include="Models\ResponseModels\" />
     <Folder Include="Enums\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Models\RequestModels\" />
+    <Folder Include="Swagger\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MT-NETCore-Data\MT-NetCore-Data.csproj" />

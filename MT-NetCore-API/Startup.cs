@@ -20,6 +20,7 @@ using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
 using MT_NetCore_API.Services;
+using MT_NetCore_API.Swagger;
 using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Common.Repositories;
 using MT_NetCore_Common.Utilities;
@@ -167,6 +168,7 @@ namespace MT_NetCore_API
                     Name = "Authorization",
                     Type = "apiKey"
                 });
+                options.SchemaFilter<SchemaFilter>();
 
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
 
@@ -236,6 +238,8 @@ namespace MT_NetCore_API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MobileForms API");
                 c.RoutePrefix = string.Empty;
+
+
             });
             app.UseResponseWrapper();
             app.UseAuth();

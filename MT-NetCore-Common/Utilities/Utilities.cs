@@ -78,6 +78,7 @@ namespace MT_NetCore_Common.Utilities
         /// </summary>
         /// <param name="tenantName">Name of the tenant.</param>
         /// <returns></returns>
+
         private int GetTenantKey(string tenantName)
         {
             var normalizedTenantName = tenantName.Replace(" ", string.Empty).ToLower();

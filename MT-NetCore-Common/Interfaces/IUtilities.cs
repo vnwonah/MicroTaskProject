@@ -7,6 +7,5 @@ namespace MT_NetCore_Common.Interfaces
         void RegisterTenantShard(TenantServerConfig tenantServerConfig, DatabaseConfig databaseConfig, CatalogConfig catalogConfig);
 
         byte[] ConvertIntKeyToBytesArray(int key);
-
     }
 }
