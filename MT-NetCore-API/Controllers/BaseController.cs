@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using MT_NetCore_API.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MT_NetCore_API.Controllers
 {
