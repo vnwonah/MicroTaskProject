@@ -42,16 +42,8 @@ namespace MT_NetCore_API.Controllers
             _catalogRepository = catalogRepository;
             _tenantRepository = tenantRepository;
         }
-        // GET: api/values
-        [HttpGet]
-        public async Task<IEnumerable<string>> GetAsync()
-        {
+      
 
-            var user = await _userService.GetUserAsync();
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult Get(string tenantId)
         {
@@ -60,49 +52,59 @@ namespace MT_NetCore_API.Controllers
 
         // POST api/values
         [HttpPost]
-        public async void Post([FromBody]CreateTeamModel model)
+        public async Task<IActionResult> Post([FromBody]CreateTeamModel model)
         {
+            //TODO: Implement Detailed Error Checking
             if (ModelState.IsValid)
             {
-                //TenantServerConfig tenantServerConfig, DatabaseConfig databaseConfig, CatalogConfig catalogConfig
-                var databaseConfig = new DatabaseConfig
+                try
                 {
-                    DatabasePassword = _configuration["DatabaseOptions:DatabasePassword"],
-                    DatabaseUser = _configuration["DatabaseOptions:DatabaseUser"],
-                    DatabaseServerPort = Int32.Parse(_configuration["DatabaseOptions:DatabaseServerPort"]),
-                    SqlProtocol = SqlProtocol.Tcp,
-                    ConnectionTimeOut = Int32.Parse(_configuration["DatabaseOptions:ConnectionTimeOut"]),
-                };
+                    //TenantServerConfig tenantServerConfig, DatabaseConfig databaseConfig, CatalogConfig catalogConfig
+                    var databaseConfig = new DatabaseConfig
+                    {
+                        DatabasePassword = _configuration["DatabaseOptions:DatabasePassword"],
+                        DatabaseUser = _configuration["DatabaseOptions:DatabaseUser"],
+                        DatabaseServerPort = Int32.Parse(_configuration["DatabaseOptions:DatabaseServerPort"]),
+                        SqlProtocol = SqlProtocol.Tcp,
+                        ConnectionTimeOut = Int32.Parse(_configuration["DatabaseOptions:ConnectionTimeOut"]),
+                    };
 
-                var catalogConfig = new CatalogConfig
+                    var catalogConfig = new CatalogConfig
+                    {
+                        ServicePlan = _configuration["DatabaseOptions:ServicePlan"],
+                        CatalogDatabase = _configuration["DatabaseOptions:CatalogDatabase"],
+                        CatalogServer = _configuration["DatabaseOptions:CatalogServer"], // + ".database.windows.net"
+                    };
+
+                    var tenantServerConfig = new TenantServerConfig
+                    {
+                        TenantServer = _configuration["DatabaseOptions:CatalogServer"],// + ".database.windows.net",
+                        TenantDatabase = _configuration["DatabaseOptions:TenantDatabase"],
+
+                    };
+
+                    var team = new Team
+                    {
+                        Id = _utilities.GetTenantKey(model.TenantName),
+                        Name = model.TenantName,
+                        LogoLink = model.TenantLogoLink,
+
+                    };
+
+                    var shard = Sharding.CreateNewShard(tenantServerConfig.TenantDatabase, tenantServerConfig.TenantServer, databaseConfig.DatabaseServerPort, null);
+                    await _tenantRepository.AddTeam(team);
+                    var x = await Sharding.RegisterNewShard(team.Id, "", shard);
+
+                    return Ok(new { team_id = team.Id, team_name = team.Name });
+                }
+                catch (Exception ex)
                 {
-                    ServicePlan = _configuration["DatabaseOptions:ServicePlan"],
-                    CatalogDatabase = _configuration["DatabaseOptions:CatalogDatabase"],
-                    CatalogServer = _configuration["DatabaseOptions:CatalogServer"], // + ".database.windows.net"
-                };
-
-                var tenantServerConfig = new TenantServerConfig
-                {
-                    TenantServer = _configuration["DatabaseOptions:CatalogServer"],// + ".database.windows.net",
-                    TenantDatabase = _configuration["DatabaseOptions:TenantDatabase"],
-
-                };
-
-
-                //get last Id
-                var team = new Team
-                {
-                    Id = _utilities.GetTenantKey(model.TenantName),
-                    Name = model.TenantName,
-                    LogoLink = model.TenantLogoLink,
-
-                };
-
-                var shard = Sharding.CreateNewShard(tenantServerConfig.TenantDatabase, tenantServerConfig.TenantServer, databaseConfig.DatabaseServerPort, null);
-                await _tenantRepository.AddTeam(team);
-                var x = await Sharding.RegisterNewShard(team.Id, "", shard);
-                //check if key is in catalog
+                    return BadRequest(new { Error = ex.Message });
+                }
+               
             }
+
+            return BadRequest(ModelState);
         }
 
         // PUT api/values/5

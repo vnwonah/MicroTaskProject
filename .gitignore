@@ -301,6 +301,8 @@ orleans.codegen.cs
 # (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
 #bower_components/
 
+
+
 # RIA/Silverlight projects
 Generated_Code/
 
@@ -403,3 +405,5 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+*.Local.json
