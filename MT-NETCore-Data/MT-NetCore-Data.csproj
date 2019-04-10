@@ -21,4 +21,16 @@
     <Folder Include="Entities\" />
     <Folder Include="IdentityDB\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20190402095638_Initial Migration.Designer.cs" />
+    <Compile Remove="Migrations\20190402095638_Initial Migration.cs" />
+    <Compile Remove="Migrations\AuthenticationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\CatalogDb\20190405123651_Initial Catalog Migration.cs" />
+    <Compile Remove="Migrations\CatalogDb\CatalogDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\TenantDb\TenantDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\TenantDb\20190410121417_updated Identity value.cs" />
+    <Compile Remove="Migrations\TenantDb\20190410121417_updated Identity value.Designer.cs" />
+    <Compile Remove="Migrations\TenantDb\20190410125926_updated datetime type.Designer.cs" />
+    <Compile Remove="Migrations\TenantDb\20190410125926_updated datetime type.cs" />
+  </ItemGroup>
 </Project>

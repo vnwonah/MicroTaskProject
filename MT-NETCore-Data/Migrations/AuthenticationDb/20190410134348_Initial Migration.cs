@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MT_NetCore_Data.Migrations
+namespace MT_NetCore_Data.Migrations.AuthenticationDb
 {
     public partial class InitialMigration : Migration
     {

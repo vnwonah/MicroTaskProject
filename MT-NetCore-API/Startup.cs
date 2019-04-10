@@ -181,7 +181,7 @@ namespace MT_NetCore_API
             //Add Application services
             services.AddTransient<ICatalogRepository, CatalogRepository>();
             services.AddTransient<ITenantRepository, TenantRepository>();
-            services.AddSingleton<ITenantRepository>(p => new TenantRepository(GetBasicSqlConnectionString()));
+            services.AddSingleton<ITenantRepository>(p => new TenantRepository(GetBasicSqlConnectionString(), Configuration));
             services.AddSingleton(Configuration);
 
 

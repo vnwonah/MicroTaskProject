@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using Microsoft.EntityFrameworkCore;
@@ -30,19 +31,28 @@ namespace MT_NetCore_Data.TenantsDB
         /// <returns></returns>
         private static DbContextOptions CreateDdrConnection(ShardMap shardMap, int shardingKey, string connectionStr)
         {
+            try
+            {
+                SqlConnection sqlConn = shardMap.OpenConnectionForKey(shardingKey, connectionStr);
+
+                // Set TenantId in SESSION_CONTEXT to shardingKey to enable Row-Level Security filtering
+                SqlCommand cmd = sqlConn.CreateCommand();
+                cmd.CommandText = @"exec sp_set_session_context @key=N'Id', @value=@shardingKey";
+                cmd.Parameters.AddWithValue("@shardingKey", shardingKey);
+                cmd.ExecuteNonQuery();
+
+                var optionsBuilder = new DbContextOptionsBuilder<TenantDbContext>();
+                var options = optionsBuilder.UseSqlServer(sqlConn).Options;
+
+                return options;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
             // Ask shard map to broker a validated connection for the given key
-            SqlConnection sqlConn = shardMap.OpenConnectionForKey(shardingKey, connectionStr);
-
-            // Set TenantId in SESSION_CONTEXT to shardingKey to enable Row-Level Security filtering
-            SqlCommand cmd = sqlConn.CreateCommand();
-            cmd.CommandText = @"exec sp_set_session_context @key=N'Id', @value=@shardingKey";
-            cmd.Parameters.AddWithValue("@shardingKey", shardingKey);
-            cmd.ExecuteNonQuery();
-
-            var optionsBuilder = new DbContextOptionsBuilder<TenantDbContext>();
-            var options = optionsBuilder.UseSqlServer(sqlConn).Options;
-
-            return options;
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

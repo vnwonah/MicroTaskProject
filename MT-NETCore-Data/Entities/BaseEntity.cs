@@ -8,17 +8,17 @@ namespace MT_NetCore_Data.Entities
     public class BaseEntity
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string UpdatedBy { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTime UTCCreatedAt { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTimeOffset? ModifiedAt { get; set; }
+        public DateTime? UTCModifiedAt { get; set; }
 
-        public DateTimeOffset? DeletedAt { get; set; }
+        public DateTime? UTCDeletedAt { get; set; }
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }

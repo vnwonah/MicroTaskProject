@@ -11,6 +11,7 @@ using MT_NetCore_API.Models.RequestModels;
 using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Common.Models;
 using MT_NetCore_Common.Utilities;
+using MT_NetCore_Data.Entities;
 using static MT_NetCore_Common.Utilities.AppConfig;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -25,15 +26,21 @@ namespace MT_NetCore_API.Controllers
         private readonly IUserService _userService;
         public readonly IUtilities _utilities;
         private readonly IConfiguration _configuration;
+        private readonly ICatalogRepository _catalogRepository;
+        private readonly ITenantRepository _tenantRepository;
 
         public TeamController(
             IUserService userService,
             IUtilities utilities,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ICatalogRepository catalogRepository,
+            ITenantRepository tenantRepository)
         {
             _userService = userService;
             _utilities = utilities;
             _configuration = configuration;
+            _catalogRepository = catalogRepository;
+            _tenantRepository = tenantRepository;
         }
         // GET: api/values
         [HttpGet]
@@ -53,7 +60,7 @@ namespace MT_NetCore_API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]CreateTeamModel model)
+        public async void Post([FromBody]CreateTeamModel model)
         {
             if (ModelState.IsValid)
             {
@@ -81,8 +88,19 @@ namespace MT_NetCore_API.Controllers
 
                 };
 
-                var shard = Sharding.CreateNewShard(tenantServerConfig.TenantDatabase, tenantServerConfig.TenantServer, databaseConfig.DatabaseServerPort, catalogConfig.ServicePlan);
-                var x = Sharding.RegisterNewShard(1, "", shard);
+
+                //get last Id
+                var team = new Team
+                {
+                    Id = _utilities.GetTenantKey(model.TenantName),
+                    Name = model.TenantName,
+                    LogoLink = model.TenantLogoLink,
+
+                };
+
+                var shard = Sharding.CreateNewShard(tenantServerConfig.TenantDatabase, tenantServerConfig.TenantServer, databaseConfig.DatabaseServerPort, null);
+                await _tenantRepository.AddTeam(team);
+                var x = await Sharding.RegisterNewShard(team.Id, "", shard);
                 //check if key is in catalog
             }
         }

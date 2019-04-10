@@ -21,20 +21,13 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Form", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset?>("DeletedAt");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FormJson");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTimeOffset?>("ModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Name");
 
@@ -46,30 +39,36 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("ProjectId");
 
+                    b.Property<int?>("ProjectId1");
+
                     b.Property<string>("Title");
+
+                    b.Property<DateTime>("UTCCreatedAt")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UTCDeletedAt");
+
+                    b.Property<DateTime?>("UTCModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UpdatedBy");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectId1");
 
                     b.ToTable("Forms");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Country");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset?>("DeletedAt");
-
-                    b.Property<string>("FormId");
+                    b.Property<int?>("FormId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -77,10 +76,15 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("Longitude");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<string>("State");
+
+                    b.Property<DateTime>("UTCCreatedAt")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UTCDeletedAt");
+
+                    b.Property<DateTime?>("UTCModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UpdatedBy");
 
@@ -93,54 +97,58 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Project", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset?>("DeletedAt");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTimeOffset?>("ModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Name");
 
                     b.Property<string>("TeamId");
 
+                    b.Property<int?>("TeamId1");
+
+                    b.Property<DateTime>("UTCCreatedAt")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UTCDeletedAt");
+
+                    b.Property<DateTime?>("UTCModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate();
+
                     b.Property<string>("UpdatedBy");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("TeamId1");
 
                     b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset?>("DeletedAt");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<byte[]>("FormId");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LocationId");
-
-                    b.Property<DateTimeOffset?>("ModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<int?>("LocationId");
 
                     b.Property<string>("SubmissionJson");
 
                     b.Property<long>("SubmissionPosition");
+
+                    b.Property<DateTime>("UTCCreatedAt")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UTCDeletedAt");
+
+                    b.Property<DateTime?>("UTCModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UpdatedBy");
 
@@ -153,13 +161,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Team", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Country");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Currency");
 
@@ -168,8 +174,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.Property<string>("CustomerSubscriptionID");
 
                     b.Property<DateTime>("DatePaid");
-
-                    b.Property<DateTimeOffset?>("DeletedAt");
 
                     b.Property<bool>("DisplayCampaignTab");
 
@@ -191,9 +195,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<long>("MaxUsers");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("NextSubscriptionDate");
@@ -214,6 +215,14 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("Team_Ref");
 
+                    b.Property<DateTime>("UTCCreatedAt")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UTCDeletedAt");
+
+                    b.Property<DateTime?>("UTCModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate();
+
                     b.Property<string>("UpdatedBy");
 
                     b.HasKey("Id");
@@ -223,21 +232,17 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("BVNNumber");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset?>("DeletedAt");
-
                     b.Property<string>("FirstName");
 
-                    b.Property<string>("FormId");
+                    b.Property<int?>("FormId");
 
                     b.Property<string>("Gender");
 
@@ -247,18 +252,23 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("LastName");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<string>("PhotoString");
 
-                    b.Property<string>("PrimaryLocationId");
+                    b.Property<int?>("PrimaryLocationId");
 
-                    b.Property<string>("ProjectId");
+                    b.Property<int?>("ProjectId");
 
-                    b.Property<string>("SecondaryLocationId");
+                    b.Property<int?>("SecondaryLocationId");
 
-                    b.Property<string>("TeamId");
+                    b.Property<int?>("TeamId");
+
+                    b.Property<DateTime>("UTCCreatedAt")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("UTCDeletedAt");
+
+                    b.Property<DateTime?>("UTCModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UpdatedBy");
 
@@ -281,7 +291,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Project")
                         .WithMany("Forms")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId1");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
@@ -295,7 +305,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Team")
                         .WithMany("Projects")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId1");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>

@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MT_NetCore_Data.Migrations.TenantDb
 {
-    public partial class InitialTenantMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,11 +12,12 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
-                    DeletedAt = table.Column<DateTimeOffset>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Team_Ref = table.Column<string>(nullable: true),
@@ -51,21 +53,23 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
-                    DeletedAt = table.Column<DateTimeOffset>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    TeamId = table.Column<string>(nullable: true)
+                    TeamId = table.Column<string>(nullable: true),
+                    TeamId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Projects_Teams_TeamId",
-                        column: x => x.TeamId,
+                        name: "FK_Projects_Teams_TeamId1",
+                        column: x => x.TeamId1,
                         principalTable: "Teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -75,11 +79,12 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Forms",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
-                    DeletedAt = table.Column<DateTimeOffset>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
@@ -87,14 +92,15 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     ProjectId = table.Column<string>(nullable: true),
                     NumberOFSubmissions = table.Column<long>(nullable: false),
                     NumberOFApprovedSubmissions = table.Column<long>(nullable: false),
-                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false)
+                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false),
+                    ProjectId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Forms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Forms_Projects_ProjectId",
-                        column: x => x.ProjectId,
+                        name: "FK_Forms_Projects_ProjectId1",
+                        column: x => x.ProjectId1,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -104,17 +110,18 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
-                    DeletedAt = table.Column<DateTimeOffset>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Country = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Latitude = table.Column<string>(nullable: true),
                     Longitude = table.Column<string>(nullable: true),
-                    FormId = table.Column<string>(nullable: true)
+                    FormId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,16 +138,17 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Submissions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
-                    DeletedAt = table.Column<DateTimeOffset>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     FormId = table.Column<byte[]>(nullable: true),
                     SubmissionJson = table.Column<string>(nullable: true),
                     SubmissionPosition = table.Column<long>(nullable: false),
-                    LocationId = table.Column<string>(nullable: true)
+                    LocationId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -157,24 +165,25 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedAt = table.Column<DateTimeOffset>(nullable: true),
-                    DeletedAt = table.Column<DateTimeOffset>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     BVNNumber = table.Column<string>(nullable: true),
                     Gender = table.Column<string>(nullable: true),
-                    PrimaryLocationId = table.Column<string>(nullable: true),
-                    SecondaryLocationId = table.Column<string>(nullable: true),
+                    PrimaryLocationId = table.Column<int>(nullable: true),
+                    SecondaryLocationId = table.Column<int>(nullable: true),
                     IdString = table.Column<string>(nullable: true),
                     PhotoString = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    FormId = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<string>(nullable: true),
-                    TeamId = table.Column<string>(nullable: true)
+                    FormId = table.Column<int>(nullable: true),
+                    ProjectId = table.Column<int>(nullable: true),
+                    TeamId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,9 +221,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Forms_ProjectId",
+                name: "IX_Forms_ProjectId1",
                 table: "Forms",
-                column: "ProjectId");
+                column: "ProjectId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_FormId",
@@ -222,9 +231,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 column: "FormId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_TeamId",
+                name: "IX_Projects_TeamId1",
                 table: "Projects",
-                column: "TeamId");
+                column: "TeamId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_LocationId",

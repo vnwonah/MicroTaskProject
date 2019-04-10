@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace MT_NetCore_Data.Migrations.CatalogDb
+namespace MT_NetCore_Data.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20190405123651_Initial Catalog Migration")]
-    partial class InitialCatalogMigration
+    [Migration("20190410134312_Initial Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

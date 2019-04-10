@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MT_NetCore_Data.Entities;
 
 namespace MT_NetCore_Common.Interfaces
 {
     public interface ITenantRepository
     {
-        #region Countries
+        #region Teams
 
+        Task<Team> AddTeam(Team team);
+        Task<Team> GetTeamDetailsAsync(int teamId);
         //Task<List<CountryModel>> GetAllCountries(int tenantId);
         //Task<CountryModel> GetCountry(string countryCode, int tenantId);
 

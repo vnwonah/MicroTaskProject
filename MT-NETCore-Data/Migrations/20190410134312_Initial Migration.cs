@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MT_NetCore_Data.Migrations.CatalogDb
+namespace MT_NetCore_Data.Migrations
 {
-    public partial class InitialCatalogMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

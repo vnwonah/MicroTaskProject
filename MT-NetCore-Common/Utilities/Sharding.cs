@@ -123,13 +123,13 @@ namespace MT_NetCore_Common.Utilities
                     var key = _utilities.ConvertIntKeyToBytesArray(pointMapping.Value);
 
                     //get tenant's venue name
-                    //var venueDetails = await _tenantRepository.GetVenueDetails(tenantId);
+                    var teamDetails = await _tenantRepository.GetTeamDetailsAsync(tenantId);
 
                     //add tenant to Tenants table
                     var tenant = new Tenant
                     {
                         Id = key,
-                        //TenantName = venueDetails.VenueName
+                        Name = teamDetails.Name
                     };
 
                     _catalogRepository.Add(tenant);
