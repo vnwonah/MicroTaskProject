@@ -6,6 +6,10 @@ namespace MT_NetCore_Data.Entities
 {
     public class Team : BaseEntity
     {
+        public Team()
+        {
+            Users = new HashSet<User>();
+        }
         public string Name { get; set; }
 
         public ICollection<Project> Projects { get; set; }

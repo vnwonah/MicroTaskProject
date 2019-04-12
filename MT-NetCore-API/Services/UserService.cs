@@ -19,7 +19,6 @@ namespace MT_NetCore_API.Services
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
         }
-
         public async Task<ApplicationUser> GetUserAsync()
         {
             return await _userManager.FindByEmailAsync(

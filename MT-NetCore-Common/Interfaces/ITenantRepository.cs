@@ -15,9 +15,9 @@ namespace MT_NetCore_Common.Interfaces
 
         #endregion
 
-        #region Customers
+        #region Users
 
-        //Task<int> AddCustomer(CustomerModel customeModel, int tenantId);
+        Task<int> AddUserToTeam(User user, int tenantId);
         //Task<CustomerModel> GetCustomer(string email, int tenantId);
 
         #endregion

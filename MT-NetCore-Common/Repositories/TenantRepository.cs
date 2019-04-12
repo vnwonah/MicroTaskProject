@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
@@ -29,6 +30,20 @@ namespace MT_NetCore_Common.Repositories
         {
             return new TenantDbContext(Sharding.ShardMap, tenantId, _connectionString);
         }
+
+        #region Users
+
+        public async Task<int> AddUserToTeam(User user, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                user.TeamId = tenantId;
+                context.Users.Add(user);
+                await context.SaveChangesAsync();
+                return user.Id;
+            }
+        }
+        #endregion
 
 
         public async Task<Team> AddTeam(Team team)

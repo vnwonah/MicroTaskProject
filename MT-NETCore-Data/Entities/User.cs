@@ -11,8 +11,12 @@ namespace MT_NetCore_Data.Entities
         public Location SecondaryLocation { get; set; }
         public string IdString { get; set; }
         public string PhotoString { get; set; }
+        public int TeamId { get; set; }
+        
 
         public string ApplicationUserId { get; set; }
+
+
     }
 
 

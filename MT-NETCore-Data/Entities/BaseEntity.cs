@@ -12,10 +12,8 @@ namespace MT_NetCore_Data.Entities
 
         public string UpdatedBy { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime UTCCreatedAt { get; set; }
+        public DateTime UTCCreatedAt { get; set; } = DateTime.UtcNow;
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UTCModifiedAt { get; set; }
 
         public DateTime? UTCDeletedAt { get; set; }

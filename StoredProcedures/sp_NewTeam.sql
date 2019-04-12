@@ -39,9 +39,6 @@ AS
         1,1 )
 
 RETURN 0
-
-EXEC sp_NewTeam 1, 'Vincent Nwonah', 'hello', '20120618 10:34:09 AM' --Sample Usage
-
 --SET IDENTITY_INSERT [dbo].[Teams] ON
  
  

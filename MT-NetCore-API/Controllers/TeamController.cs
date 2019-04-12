@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -86,17 +87,27 @@ namespace MT_NetCore_API.Controllers
                         Id = _utilities.GetTenantKey(model.TenantName),
                         Name = model.TenantName,
                         LogoLink = model.TenantLogoLink,
-
+                        
                     };
 
+
+
+                    //Create Shard, Add Team and Register Tenant against shard
                     var shard = Sharding.CreateNewShard(tenantServerConfig.TenantDatabase, tenantServerConfig.TenantServer, databaseConfig.DatabaseServerPort, null);
                     await _tenantRepository.AddTeam(team);
                     var x = await Sharding.RegisterNewShard(team.Id, "", shard);
+
+                    //Add first user to team. Team Owner!
+                    var applicationUser = await _userService.GetUserAsync();
+                    var user = new User { ApplicationUserId = applicationUser.Id };
+                    await _tenantRepository.AddUserToTeam(user, team.Id);
+
 
                     return Ok(new { team_id = team.Id, team_name = team.Name });
                 }
                 catch (Exception ex)
                 {
+                    //TODO: Log Error
                     return BadRequest(new { Error = ex.Message });
                 }
                
