@@ -14,7 +14,8 @@ namespace MT_NetCore_Data.Entities
         public string IdString { get; set; }
         public string PhotoString { get; set; }
         public int TeamId { get; set; }
-        public ICollection<Project> Projects { get; set; }
+        public ICollection<ProjectUser> ProjectUsers { get; set; }
+        public string Email { get; set; }
 
         public string ApplicationUserId { get; set; }
 

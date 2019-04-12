@@ -57,7 +57,16 @@ namespace MT_NetCore_Data.TenantsDB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            modelBuilder.Entity<ProjectUser>()
+                .HasKey(pu => new { pu.ProjectId, pu.UserId });
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(pu => pu.Project)
+                .WithMany(pu => pu.ProjectUsers)
+                .HasForeignKey(pu =>pu.ProjectId);
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(pu => pu.User)
+                .WithMany(pu => pu.ProjectUsers)
+                .HasForeignKey(pu => pu.UserId);
         }
 
         public virtual DbSet<Form> Forms { get; set; }
@@ -66,6 +75,7 @@ namespace MT_NetCore_Data.TenantsDB
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ProjectUser> ProjectUsers { get; set; }
 
     }
 }

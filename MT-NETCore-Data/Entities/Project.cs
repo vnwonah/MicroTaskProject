@@ -9,9 +9,11 @@ namespace MT_NetCore_Data.Entities
         //will remove
         public string Name { get; set; }
 
-        public string TeamId { get; set; }
+        public int TeamId { get; set; }
         
         public ICollection<Form> Forms { get; set; }
+
+        public ICollection<ProjectUser> ProjectUsers { get; set; }
 
 
     }

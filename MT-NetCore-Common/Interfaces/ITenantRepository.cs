@@ -10,21 +10,20 @@ namespace MT_NetCore_Common.Interfaces
 
         Task<Team> AddTeam(Team team);
         Task<Team> GetTeamDetailsAsync(int teamId);
-        //Task<List<CountryModel>> GetAllCountries(int tenantId);
-        //Task<CountryModel> GetCountry(string countryCode, int tenantId);
 
         #endregion
 
         #region Users
 
         Task<int> AddUserToTeam(User user, int tenantId);
-        //Task<CustomerModel> GetCustomer(string email, int tenantId);
+        Task<User> GetUserByEmailAsync(string email, int tenantId);
+        Task<bool> UpdateUser(User model, int tenantId);
 
         #endregion
 
-        #region EventSections
+        #region Projects
 
-        //Task<List<EventSectionModel>> GetEventSections(int eventId, int tenantId);
+        Task<int> AddProjectToTeam(Project model, int tenantId);
 
         #endregion
 

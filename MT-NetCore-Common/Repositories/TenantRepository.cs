@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
@@ -31,6 +32,20 @@ namespace MT_NetCore_Common.Repositories
             return new TenantDbContext(Sharding.ShardMap, tenantId, _connectionString);
         }
 
+        #region Project
+        public async Task<int> AddProjectToTeam(Project model, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                model.TeamId = tenantId;
+                context.Projects.Add(model);
+                await context.SaveChangesAsync();
+                return model.Id;
+            }
+        }
+
+        #endregion
+
         #region Users
 
         public async Task<int> AddUserToTeam(User user, int tenantId)
@@ -42,6 +57,27 @@ namespace MT_NetCore_Common.Repositories
                 await context.SaveChangesAsync();
                 return user.Id;
             }
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                var user = await context.Users.FirstOrDefaultAsync(i => i.Email == email && i.TeamId == tenantId);
+                return user;
+            }
+        }
+
+        public async Task<bool> UpdateUser(User model, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                context.Users.Attach(model);
+                var res = await context.SaveChangesAsync();
+                if (res == 1)
+                    return true;
+            }
+            return false;
         }
         #endregion
 
