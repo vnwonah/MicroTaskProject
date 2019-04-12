@@ -98,7 +98,7 @@ namespace MT_NetCore_API.Controllers
                     var x = await Sharding.RegisterNewShard(team.Id, "", shard);
 
                     //Add first user to team. Team Owner!
-                    var applicationUser = await _userService.GetUserAsync();
+                    var applicationUser = await _userService.GetApplicationUserAsync();
                     var user = new User { ApplicationUserId = applicationUser.Id };
                     await _tenantRepository.AddUserToTeam(user, team.Id);
 

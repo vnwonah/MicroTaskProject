@@ -4,16 +4,14 @@ using MT_NetCore_Data.CatalogDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace MT_NetCore_Data.Migrations
+namespace MT_NetCore_Data.Migrations.CatalogDb
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20190410134312_Initial Migration")]
-    partial class InitialMigration
+    partial class CatalogDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

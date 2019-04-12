@@ -41,23 +41,25 @@ using static MT_NetCore_Common.Utilities.AppConfig;
  * 
  * How to set:
  * Mac OS: export ASPNETCORE_ENVIRONMENT=<Environment Name> eg: export ASPNETCORE_ENVIRONMENT=Production
- * 
  * Windows CMD: set ASPNETCORE_ENVIRONMENT=<Environment Name> eg: set ASPNETCORE_ENVIRONMENT=Production
  * Windows CMD 2: setx ASPNETCORE_ENVIRONMENT=<Environment Name> eg: setx ASPNETCORE_ENVIRONMENT=Production.
  * Use second command if first fails. 
  * 
+ * Info: change directory into API Project first with cd MT-NetCore-API before running Migrations and DB
+ * Update Commands
+ * 
  * Migrations are Added Per DB Context
  * 
- * Sample Micgration Command: 
- * `dotnet ef migrations add "Initial Migration" -s ../MT-NetCore-API --context AuthenticationDbContext`
+ * Sample Migration Command: 
+ * > dotnet ef migrations add "Initial Migration" --context TenantDbContext --project ../MT-NetCore-Data
  * -------------------------------------------------
  * Database is Updated Per DB Context
  * 
  * Sample Update Command:
- * `dotnet ef database update -s ../MT-NetCore-API --context AuthenticationDbContext`
+ * > dotnet ef database update --context TenantDbContext --project ../MT-NetCore-Data
  * 
  * You can add the verbose flag to commands to see whats going on with --verbose
- * eg: `dotnet ef database update -s ../MT-NetCore-API --context AuthenticationDbContext --verbose`
+ * eg: > dotnet ef database update --context TenantDbContext --project ../MT-NetCore-Data --verbose
  */
 
 namespace MT_NetCore_API

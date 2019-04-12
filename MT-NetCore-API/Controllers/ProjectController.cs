@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.RequestModels;
 using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Data.Entities;
@@ -19,10 +20,14 @@ namespace MT_NetCore_API.Controllers
     public class ProjectController : Controller
     {
         private readonly ITenantRepository _tenantRepository;
+        private readonly IUserService _userService;
 
-        public ProjectController(ITenantRepository tenantRepository)
+        public ProjectController(
+            ITenantRepository tenantRepository,
+            IUserService userService)
         {
             _tenantRepository = tenantRepository;
+            _userService = userService;
         }
 
         // GET api/values/5
@@ -39,7 +44,12 @@ namespace MT_NetCore_API.Controllers
             if (ModelState.IsValid)
             {
                 var project = new Project { Name = model.ProjectName };
+
                 var projectId = await _tenantRepository.AddProjectToTeam(project, 44444); //you need to find team Id!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                var user = _userService.GetCurrentUserAsync(44444);
+
+                //_tenantRepository.UpdateUser()
 
             }
 

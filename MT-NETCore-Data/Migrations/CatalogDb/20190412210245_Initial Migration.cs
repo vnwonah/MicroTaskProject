@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MT_NetCore_Data.Migrations
+namespace MT_NetCore_Data.Migrations.CatalogDb
 {
     public partial class InitialMigration : Migration
     {

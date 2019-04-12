@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MT_NetCore_Data.Migrations.TenantDb
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20190412125036_Modified User & Project Models")]
-    partial class ModifiedUserProjectModels
+    [Migration("20190412210133_Initial Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,6 +66,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address");
+
                     b.Property<string>("Country");
 
                     b.Property<int?>("FormId");
@@ -103,9 +105,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("TeamId");
-
-                    b.Property<int?>("TeamId1");
+                    b.Property<int>("TeamId");
 
                     b.Property<DateTime>("UTCCreatedAt");
 
@@ -115,15 +115,24 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("UpdatedBy");
 
-                    b.Property<int?>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamId1");
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("MT_NetCore_Data.Entities.ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("ProjectId", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("ProjectUsers");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>
@@ -236,6 +245,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("BVNNumber");
 
+                    b.Property<string>("Email");
+
                     b.Property<string>("FirstName");
 
                     b.Property<int?>("FormId");
@@ -295,11 +306,21 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Team")
                         .WithMany("Projects")
-                        .HasForeignKey("TeamId1");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("MT_NetCore_Data.Entities.User")
-                        .WithMany("Projects")
-                        .HasForeignKey("UserId");
+            modelBuilder.Entity("MT_NetCore_Data.Entities.ProjectUser", b =>
+                {
+                    b.HasOne("MT_NetCore_Data.Entities.Project", "Project")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MT_NetCore_Data.Entities.User", "User")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>

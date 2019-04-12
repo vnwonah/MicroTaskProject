@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+    
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>MT_NetCore_Data</RootNamespace>
@@ -15,9 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.3" />
   </ItemGroup>
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
-  </ItemGroup>
+
   <ItemGroup>
     <Folder Include="CatalogDB\" />
     <Folder Include="TenantsDB\" />
@@ -36,4 +34,5 @@
     <Compile Remove="Migrations\TenantDb\20190410125926_updated datetime type.Designer.cs" />
     <Compile Remove="Migrations\TenantDb\20190410125926_updated datetime type.cs" />
   </ItemGroup>
+    
 </Project>
