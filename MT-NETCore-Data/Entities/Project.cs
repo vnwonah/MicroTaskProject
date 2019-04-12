@@ -10,9 +10,7 @@ namespace MT_NetCore_Data.Entities
         public string Name { get; set; }
 
         public string TeamId { get; set; }
-
-        public ICollection<User> Users { get; set; }
-
+        
         public ICollection<Form> Forms { get; set; }
 
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MT_NetCore_Data.Migrations.TenantDb
 {
-    public partial class InitialMigration : Migration
+    public partial class ModifiedUserProjectModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,63 +50,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
-                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
-                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    TeamId = table.Column<string>(nullable: true),
-                    TeamId1 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Projects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Projects_Teams_TeamId1",
-                        column: x => x.TeamId1,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Forms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
-                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
-                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    FormJson = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<string>(nullable: true),
-                    NumberOFSubmissions = table.Column<long>(nullable: false),
-                    NumberOFApprovedSubmissions = table.Column<long>(nullable: false),
-                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false),
-                    ProjectId1 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Forms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Forms_Projects_ProjectId1",
-                        column: x => x.ProjectId1,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -126,12 +69,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Locations_Forms_FormId",
-                        column: x => x.FormId,
-                        principalTable: "Forms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,30 +117,17 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     SecondaryLocationId = table.Column<int>(nullable: true),
                     IdString = table.Column<string>(nullable: true),
                     PhotoString = table.Column<string>(nullable: true),
+                    TeamId = table.Column<int>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    FormId = table.Column<int>(nullable: true),
-                    ProjectId = table.Column<int>(nullable: true),
-                    TeamId = table.Column<int>(nullable: true)
+                    FormId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Forms_FormId",
-                        column: x => x.FormId,
-                        principalTable: "Forms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Users_Locations_PrimaryLocationId",
                         column: x => x.PrimaryLocationId,
                         principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Users_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -216,6 +140,70 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                         name: "FK_Users_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    TeamId = table.Column<string>(nullable: true),
+                    TeamId1 = table.Column<int>(nullable: true),
+                    UserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Projects_Teams_TeamId1",
+                        column: x => x.TeamId1,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Projects_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Forms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UpdatedBy = table.Column<string>(nullable: true),
+                    UTCCreatedAt = table.Column<DateTime>(nullable: false),
+                    UTCModifiedAt = table.Column<DateTime>(nullable: true),
+                    UTCDeletedAt = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    FormJson = table.Column<string>(nullable: true),
+                    ProjectId = table.Column<string>(nullable: true),
+                    NumberOFSubmissions = table.Column<long>(nullable: false),
+                    NumberOFApprovedSubmissions = table.Column<long>(nullable: false),
+                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false),
+                    ProjectId1 = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Forms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Forms_Projects_ProjectId1",
+                        column: x => x.ProjectId1,
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -236,6 +224,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 column: "TeamId1");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Projects_UserId",
+                table: "Projects",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Submissions_LocationId",
                 table: "Submissions",
                 column: "LocationId");
@@ -251,11 +244,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 column: "PrimaryLocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_ProjectId",
-                table: "Users",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_SecondaryLocationId",
                 table: "Users",
                 column: "SecondaryLocationId");
@@ -264,12 +252,35 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "IX_Users_TeamId",
                 table: "Users",
                 column: "TeamId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Locations_Forms_FormId",
+                table: "Locations",
+                column: "FormId",
+                principalTable: "Forms",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Users_Forms_FormId",
+                table: "Users",
+                column: "FormId",
+                principalTable: "Forms",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Forms_Projects_ProjectId1",
+                table: "Forms");
+
             migrationBuilder.DropTable(
                 name: "Submissions");
+
+            migrationBuilder.DropTable(
+                name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -278,13 +289,10 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Locations");
 
             migrationBuilder.DropTable(
-                name: "Forms");
-
-            migrationBuilder.DropTable(
-                name: "Projects");
-
-            migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Forms");
         }
     }
 }

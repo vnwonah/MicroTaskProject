@@ -36,6 +36,16 @@ using static MT_NetCore_Common.Utilities.AppConfig;
 /*=================================================
  *          Essential Commands
  * ================================================
+ * Before running any of these commands set ASPNETCORE_ENVIRONMENT variable first.
+ * This lets entity framework know which configuration files and connection string to use for the database operations
+ * 
+ * How to set:
+ * Mac OS: export ASPNETCORE_ENVIRONMENT=<Environment Name> eg: export ASPNETCORE_ENVIRONMENT=Production
+ * 
+ * Windows CMD: set ASPNETCORE_ENVIRONMENT=<Environment Name> eg: set ASPNETCORE_ENVIRONMENT=Production
+ * Windows CMD 2: setx ASPNETCORE_ENVIRONMENT=<Environment Name> eg: setx ASPNETCORE_ENVIRONMENT=Production.
+ * Use second command if first fails. 
+ * 
  * Migrations are Added Per DB Context
  * 
  * Sample Micgration Command: 
@@ -45,6 +55,9 @@ using static MT_NetCore_Common.Utilities.AppConfig;
  * 
  * Sample Update Command:
  * `dotnet ef database update -s ../MT-NetCore-API --context AuthenticationDbContext`
+ * 
+ * You can add the verbose flag to commands to see whats going on with --verbose
+ * eg: `dotnet ef database update -s ../MT-NetCore-API --context AuthenticationDbContext --verbose`
  */
 
 namespace MT_NetCore_API

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MT_NetCore_Data.Migrations.TenantDb
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20190410134330_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20190412125036_Modified User & Project Models")]
+    partial class ModifiedUserProjectModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,13 +45,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("Title");
 
-                    b.Property<DateTime>("UTCCreatedAt")
-                        .ValueGeneratedOnAdd();
+                    b.Property<DateTime>("UTCCreatedAt");
 
                     b.Property<DateTime?>("UTCDeletedAt");
 
-                    b.Property<DateTime?>("UTCModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
 
@@ -80,13 +78,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("State");
 
-                    b.Property<DateTime>("UTCCreatedAt")
-                        .ValueGeneratedOnAdd();
+                    b.Property<DateTime>("UTCCreatedAt");
 
                     b.Property<DateTime?>("UTCDeletedAt");
 
-                    b.Property<DateTime?>("UTCModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
 
@@ -111,19 +107,21 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<int?>("TeamId1");
 
-                    b.Property<DateTime>("UTCCreatedAt")
-                        .ValueGeneratedOnAdd();
+                    b.Property<DateTime>("UTCCreatedAt");
 
                     b.Property<DateTime?>("UTCDeletedAt");
 
-                    b.Property<DateTime?>("UTCModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
+
+                    b.Property<int?>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeamId1");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
@@ -144,13 +142,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<long>("SubmissionPosition");
 
-                    b.Property<DateTime>("UTCCreatedAt")
-                        .ValueGeneratedOnAdd();
+                    b.Property<DateTime>("UTCCreatedAt");
 
                     b.Property<DateTime?>("UTCDeletedAt");
 
-                    b.Property<DateTime?>("UTCModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
 
@@ -217,13 +213,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("Team_Ref");
 
-                    b.Property<DateTime>("UTCCreatedAt")
-                        .ValueGeneratedOnAdd();
+                    b.Property<DateTime>("UTCCreatedAt");
 
                     b.Property<DateTime?>("UTCDeletedAt");
 
-                    b.Property<DateTime?>("UTCModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
 
@@ -258,19 +252,15 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<int?>("PrimaryLocationId");
 
-                    b.Property<int?>("ProjectId");
-
                     b.Property<int?>("SecondaryLocationId");
 
-                    b.Property<int?>("TeamId");
+                    b.Property<int>("TeamId");
 
-                    b.Property<DateTime>("UTCCreatedAt")
-                        .ValueGeneratedOnAdd();
+                    b.Property<DateTime>("UTCCreatedAt");
 
                     b.Property<DateTime?>("UTCDeletedAt");
 
-                    b.Property<DateTime?>("UTCModifiedAt")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
 
@@ -279,8 +269,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.HasIndex("FormId");
 
                     b.HasIndex("PrimaryLocationId");
-
-                    b.HasIndex("ProjectId");
 
                     b.HasIndex("SecondaryLocationId");
 
@@ -308,6 +296,10 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.HasOne("MT_NetCore_Data.Entities.Team")
                         .WithMany("Projects")
                         .HasForeignKey("TeamId1");
+
+                    b.HasOne("MT_NetCore_Data.Entities.User")
+                        .WithMany("Projects")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>
@@ -327,17 +319,14 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                         .WithMany()
                         .HasForeignKey("PrimaryLocationId");
 
-                    b.HasOne("MT_NetCore_Data.Entities.Project")
-                        .WithMany("Users")
-                        .HasForeignKey("ProjectId");
-
                     b.HasOne("MT_NetCore_Data.Entities.Location", "SecondaryLocation")
                         .WithMany()
                         .HasForeignKey("SecondaryLocationId");
 
                     b.HasOne("MT_NetCore_Data.Entities.Team")
                         .WithMany("Users")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

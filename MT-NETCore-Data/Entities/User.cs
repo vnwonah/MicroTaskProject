@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace MT_NetCore_Data.Entities
 {
     public class User : BaseEntity
@@ -12,7 +14,7 @@ namespace MT_NetCore_Data.Entities
         public string IdString { get; set; }
         public string PhotoString { get; set; }
         public int TeamId { get; set; }
-        
+        public ICollection<Project> Projects { get; set; }
 
         public string ApplicationUserId { get; set; }
 
