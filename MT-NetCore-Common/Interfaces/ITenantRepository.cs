@@ -17,13 +17,14 @@ namespace MT_NetCore_Common.Interfaces
 
         Task<int> AddUserToTeam(User user, int tenantId);
         Task<User> GetUserByEmailAsync(string email, int tenantId);
-        Task<bool> UpdateUser(User model, int tenantId);
+        Task<int> UpdateUser(User model, int tenantId);
 
         #endregion
 
         #region Projects
 
         Task<int> AddProjectToTeam(Project model, int tenantId);
+        Task<int> AddProjectUser(int userId, int projectId, int tenantId);
 
         #endregion
 

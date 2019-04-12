@@ -13,18 +13,15 @@ using MT_NetCore_Data.Entities;
 
 namespace MT_NetCore_API.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
-    [ApiController]
-    [Route("api/[controller]")]
-    [Produces("application/json")]
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
         private readonly ITenantRepository _tenantRepository;
         private readonly IUserService _userService;
 
         public ProjectController(
             ITenantRepository tenantRepository,
-            IUserService userService)
+            IUserService userService,
+            IRequestContext requestContext) : base(requestContext)
         {
             _tenantRepository = tenantRepository;
             _userService = userService;
@@ -43,14 +40,23 @@ namespace MT_NetCore_API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var project = new Project { Name = model.ProjectName };
+                try
+                {
+                    var project = new Project { Name = model.ProjectName };
 
-                var projectId = await _tenantRepository.AddProjectToTeam(project, 44444); //you need to find team Id!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    var projectId = await _tenantRepository.AddProjectToTeam(project, TenantId); //you need to find team Id!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                var user = _userService.GetCurrentUserAsync(44444);
+                    var user = await _userService.GetCurrentUserAsync(TenantId);
 
-                //_tenantRepository.UpdateUser()
+                    await _tenantRepository.AddProjectUser(user.Id, projectId, TenantId);
 
+                    return Ok(new { project_name = model.ProjectName, users = new List<User> { user } });
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { ex.Message});
+                }
+               
             }
 
             return BadRequest(ModelState);

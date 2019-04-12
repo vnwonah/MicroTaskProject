@@ -28,7 +28,8 @@ namespace MT_NetCore_API.Controllers
         public UserController(
             UserManager<ApplicationUser> userManager,
             IOptions<JwtIssuerOptions> jwtOptions,
-            IJwtFactory jwtFactory)
+            IJwtFactory jwtFactory,
+            IRequestContext requestContext) : base(requestContext)
         {
             
             _userManager = userManager;

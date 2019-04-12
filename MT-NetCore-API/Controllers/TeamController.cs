@@ -33,7 +33,8 @@ namespace MT_NetCore_API.Controllers
             IUtilities utilities,
             IConfiguration configuration,
             ICatalogRepository catalogRepository,
-            ITenantRepository tenantRepository)
+            ITenantRepository tenantRepository,
+            IRequestContext requestContext) : base(requestContext)
         {
             _userService = userService;
             _utilities = utilities;
@@ -99,7 +100,7 @@ namespace MT_NetCore_API.Controllers
 
                     //Add first user to team. Team Owner!
                     var applicationUser = await _userService.GetApplicationUserAsync();
-                    var user = new User { ApplicationUserId = applicationUser.Id };
+                    var user = new User { ApplicationUserId = applicationUser.Id, Email = applicationUser.Email };
                     await _tenantRepository.AddUserToTeam(user, team.Id);
 
 

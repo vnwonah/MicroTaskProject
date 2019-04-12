@@ -184,9 +184,8 @@ namespace MT_NetCore_API
                     Type = "apiKey"
                 });
                 options.SchemaFilter<SchemaFilter>();
-
+                options.OperationFilter<HeaderFilter>();
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
-
             });
 
             services.AddMvc();
@@ -198,6 +197,7 @@ namespace MT_NetCore_API
             services.AddTransient<ITenantRepository, TenantRepository>();
             services.AddSingleton<ITenantRepository>(p => new TenantRepository(GetBasicSqlConnectionString(), Configuration));
             services.AddSingleton(Configuration);
+            services.AddSingleton<IRequestContext, RequestContextAdapter>();
 
 
             //create instance of utilities class

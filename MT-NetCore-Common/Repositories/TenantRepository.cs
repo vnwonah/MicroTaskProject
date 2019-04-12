@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Diagnostics;
+﻿using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
@@ -33,6 +30,7 @@ namespace MT_NetCore_Common.Repositories
         }
 
         #region Project
+
         public async Task<int> AddProjectToTeam(Project model, int tenantId)
         {
             using (var context = CreateContext(tenantId))
@@ -41,6 +39,17 @@ namespace MT_NetCore_Common.Repositories
                 context.Projects.Add(model);
                 await context.SaveChangesAsync();
                 return model.Id;
+            }
+        }
+
+        public async Task<int> AddProjectUser(int userId, int projectId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                var pu = new ProjectUser { UserId = userId, ProjectId = projectId };
+                context.ProjectUsers.Add(pu);
+                await context.SaveChangesAsync();
+                return pu.ProjectId;
             }
         }
 
@@ -68,16 +77,14 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
-        public async Task<bool> UpdateUser(User model, int tenantId)
+        public async Task<int> UpdateUser(User model, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {
                 context.Users.Attach(model);
                 var res = await context.SaveChangesAsync();
-                if (res == 1)
-                    return true;
+                return model.Id;
             }
-            return false;
         }
         #endregion
 
