@@ -44,4 +44,7 @@
     <Compile Remove="Extensions\AspNetCoreExtensions.cs" />
     <Compile Remove="Extensions\ApplicationBuilderExtensions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="appsettings.Local.json" />
+  </ItemGroup>
 </Project>
