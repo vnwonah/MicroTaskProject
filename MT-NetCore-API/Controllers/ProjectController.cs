@@ -27,13 +27,21 @@ namespace MT_NetCore_API.Controllers
             _userService = userService;
         }
 
+        /*
         // GET api/values/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
+        */
 
+        /// <summary>
+        /// Adds a new Project to a Team
+        /// </summary>
+        /// <remarks>The header value 'X-Tenant-Id' must be passed in the http request header</remarks>
+        /// <response code="200">Project added successfully</response>
+        /// <response code="400">Something went wrong</response>
         // POST api/values
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateProjectModel model)
@@ -62,6 +70,7 @@ namespace MT_NetCore_API.Controllers
             return BadRequest(ModelState);
         }
 
+        /*
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
@@ -73,5 +82,6 @@ namespace MT_NetCore_API.Controllers
         public void Delete(int id)
         {
         }
+        */
     }
 }

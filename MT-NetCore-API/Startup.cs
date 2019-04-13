@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.IO;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -175,7 +176,17 @@ namespace MT_NetCore_API
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info { Title = "MobileForms API", Version = "v2.0.0" });
+                options.SwaggerDoc("v1", new Info
+                {
+                    Title = "MobileForms API",
+                    Version = "v2.0.0",
+                    Description = "Mobile Forms Africa REST API",
+                    Contact = new Contact
+                    {
+                        Email = "dev@crowdforce.io",
+                        Url = "https://crowdforce.io/help"
+                    }
+                });
                 options.AddSecurityDefinition("oauth2", new ApiKeyScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
@@ -183,6 +194,12 @@ namespace MT_NetCore_API
                     Name = "Authorization",
                     Type = "apiKey"
                 });
+
+                var basePath = AppContext.BaseDirectory;
+                var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+                var fileName = Path.GetFileName(assemblyName + ".xml");
+                options.IncludeXmlComments(System.IO.Path.Combine(basePath, fileName));
+
                 options.SchemaFilter<SchemaFilter>();
                 options.OperationFilter<HeaderFilter>();
                 options.OperationFilter<SecurityRequirementsOperationFilter>();

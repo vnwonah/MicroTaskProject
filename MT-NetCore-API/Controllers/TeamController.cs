@@ -43,12 +43,13 @@ namespace MT_NetCore_API.Controllers
             _tenantRepository = tenantRepository;
         }
       
-
+        /*
         [HttpGet("{id}")]
         public IActionResult Get(string tenantId)
         {
             return new OkObjectResult(new TeamModel());
         }
+        */
 
         // POST api/values
         [HttpPost]
@@ -116,6 +117,7 @@ namespace MT_NetCore_API.Controllers
 
             return BadRequest(ModelState);
         }
+        /*
 
         // PUT api/values/5
         [HttpPut("{id}")]
@@ -128,5 +130,6 @@ namespace MT_NetCore_API.Controllers
         public void Delete(int id)
         {
         }
+        */
     }
 }
