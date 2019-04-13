@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
@@ -8,6 +9,7 @@ using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Common.Utilities;
 using MT_NetCore_Data.Entities;
 using MT_NetCore_Data.TenantsDB;
+using Newtonsoft.Json;
 
 namespace MT_NetCore_Common.Repositories
 {
@@ -50,6 +52,15 @@ namespace MT_NetCore_Common.Repositories
                 context.ProjectUsers.Add(pu);
                 await context.SaveChangesAsync();
                 return pu.ProjectId;
+            }
+        }
+
+        public async Task<Project> GetProjectById(int id, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                var project = await context.Projects.FirstOrDefaultAsync(i => i.Id == id && i.TeamId == tenantId);
+                return project;
             }
         }
 
@@ -119,23 +130,26 @@ namespace MT_NetCore_Common.Repositories
 
                 if (Sharding.ShardMap.TryGetMappingForKey(teamId, out mapping))
                 {
-                    using (SqlConnection sqlConn = Sharding.ShardMap.OpenConnectionForKey(teamId, _connectionString))
+                    try
                     {
-                        databaseName = sqlConn.Database;
-                        databaseServerName = sqlConn.DataSource.Split(':').Last().Split(',').First();
-                    }
-                    var team = await context.Teams.FirstOrDefaultAsync(x => x.Id == teamId);
+                        using (SqlConnection sqlConn = Sharding.ShardMap.OpenConnectionForKey(teamId, _connectionString))
+                        {
+                            databaseName = sqlConn.Database;
+                            databaseServerName = sqlConn.DataSource.Split(':').Last().Split(',').First();
+                        }
+                        var team = await context.Teams.FirstOrDefaultAsync(x => x.Id == teamId);
 
-                    /*
-                    if (venue != null)
-                    {
-                        var venueModel = venue.ToVenueModel();
-                        venueModel.DatabaseName = databaseName;
-                        venueModel.DatabaseServerName = databaseServerName;
-                        return venueModel;
+                        return team;
                     }
-                    */
-                    return team;
+                    catch (JsonSerializationException ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
+                   
                 }
                 return null;
             }

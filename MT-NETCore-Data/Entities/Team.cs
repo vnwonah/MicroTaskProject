@@ -6,15 +6,11 @@ namespace MT_NetCore_Data.Entities
 {
     public class Team : BaseEntity
     {
-        public Team()
-        {
-            Users = new HashSet<User>();
-        }
         public string Name { get; set; }
 
-        public ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
 
         public string Team_Ref { get; set; }
         
@@ -57,7 +53,6 @@ namespace MT_NetCore_Data.Entities
 
         public string Country { get; set; }
         public string Currency { get; set; }
-
         [DefaultValue("/assets/images/logo.png")]
 
         public string LogoLink { get; set; }

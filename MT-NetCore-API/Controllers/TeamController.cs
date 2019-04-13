@@ -43,13 +43,16 @@ namespace MT_NetCore_API.Controllers
             _tenantRepository = tenantRepository;
         }
       
-        /*
-        [HttpGet("{id}")]
-        public IActionResult Get(string tenantId)
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync()
         {
-            return new OkObjectResult(new TeamModel());
+            var team = await _tenantRepository.GetTeamDetailsAsync(TenantId);
+            if(team != null)
+                return new OkObjectResult(team);
+            return NotFound();
         }
-        */
+
 
         // POST api/values
         [HttpPost]

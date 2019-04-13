@@ -27,14 +27,17 @@ namespace MT_NetCore_API.Controllers
             _userService = userService;
         }
 
-        /*
+
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var project = await _tenantRepository.GetProjectById(id, TenantId);
+            if (project != null)
+                return Ok(project);
+            return NotFound();
         }
-        */
+
 
         /// <summary>
         /// Adds a new Project to a Team

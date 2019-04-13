@@ -183,6 +183,7 @@ namespace MT_NetCore_API
                     Description = "Mobile Forms Africa REST API",
                     Contact = new Contact
                     {
+                        Name = "MFA Developers",
                         Email = "dev@crowdforce.io",
                         Url = "https://crowdforce.io/help"
                     }

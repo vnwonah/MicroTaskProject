@@ -25,6 +25,7 @@ namespace MT_NetCore_Common.Interfaces
 
         Task<int> AddProjectToTeam(Project model, int tenantId);
         Task<int> AddProjectUser(int userId, int projectId, int tenantId);
+        Task<Project> GetProjectById(int id, int tenantId);
 
         #endregion
 
