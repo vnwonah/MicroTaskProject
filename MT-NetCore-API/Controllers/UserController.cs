@@ -108,7 +108,12 @@ namespace MT_NetCore_API.Controllers
         public async Task<IActionResult> Get(string email)
         {
             var user = await _tenantRepository.GetUserByEmailAsync(email, TenantId);
-            return Ok(user);
+            if(user != null)
+                return Ok(user);
+            return BadRequest(new ErrorResponse
+            {
+                ErrorDescription = "User does not have access to team or Team does not Exist"
+            });
         }
 
         private async Task<ClaimsIdentity> GetClaimsIdentity(string email, string password)
