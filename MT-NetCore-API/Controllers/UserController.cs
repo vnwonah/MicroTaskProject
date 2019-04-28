@@ -8,6 +8,7 @@ using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
 using MT_NetCore_API.Models.ResponseModels;
+using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Data.IdentityDB;
 using Newtonsoft.Json;
 
@@ -24,17 +25,20 @@ namespace MT_NetCore_API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
+        private readonly ITenantRepository _tenantRepository;
 
         public UserController(
             UserManager<ApplicationUser> userManager,
             IOptions<JwtIssuerOptions> jwtOptions,
             IJwtFactory jwtFactory,
-            IRequestContext requestContext) : base(requestContext)
+            IRequestContext requestContext,
+            ITenantRepository tenantRepository) : base(requestContext)
         {
             
             _userManager = userManager;
             _jwtFactory = jwtFactory;
             _jwtOptions = jwtOptions.Value;
+            _tenantRepository = tenantRepository;
         }
 
         [AllowAnonymous]
@@ -100,6 +104,12 @@ namespace MT_NetCore_API.Controllers
            
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get(string email)
+        {
+            var user = await _tenantRepository.GetUserByEmailAsync(email, TenantId);
+            return Ok(user);
+        }
 
         private async Task<ClaimsIdentity> GetClaimsIdentity(string email, string password)
         {
