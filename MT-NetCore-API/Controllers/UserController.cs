@@ -104,7 +104,7 @@ namespace MT_NetCore_API.Controllers
            
         }
 
-        [HttpGet]
+        [HttpGet(nameof(GetUserForTeam))]
         public async Task<IActionResult> GetUserForTeam(string email)
         {
             var user = await _tenantRepository.GetUserByEmailAsync(email, TenantId);
@@ -116,6 +116,7 @@ namespace MT_NetCore_API.Controllers
             });
         }
 
+        [HttpGet(nameof(GetUserProjects))]
         public async Task<IActionResult> GetUserProjects(string email)
         {
             var projects = await _tenantRepository.GetUserProjects(email, TenantId);

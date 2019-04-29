@@ -56,6 +56,7 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
+
         public async Task<Project> GetProjectById(int id, int tenantId)
         {
             using (var context = CreateContext(tenantId))
