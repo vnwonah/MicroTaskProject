@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MT_NetCore_Data.Entities;
 
@@ -18,6 +19,7 @@ namespace MT_NetCore_Common.Interfaces
         Task<int> AddUserToTeam(User user, int tenantId);
         Task<User> GetUserByEmailAsync(string email, int tenantId);
         Task<int> UpdateUser(User model, int tenantId);
+        Task<List<Project>> GetUserProjects(string email, int tenantId);
 
         #endregion
 

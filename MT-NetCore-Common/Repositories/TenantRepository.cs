@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,6 +65,23 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
+        public async Task<List<Project>> GetUserProjects(string email, int tenantId)
+        {
+            var user = await GetUserByEmailAsync(email, tenantId);
+            using (var context = CreateContext(tenantId))
+            {
+                var projects = await context.Projects.Where(p => p.ProjectUsers.Any(u => u.UserId == user.Id))
+                    //.Select(
+                    //p => new
+                    //{
+                    //    p.Id,
+                    //    p.Name
+                    //})
+                    .ToListAsync();
+
+                return projects;
+            }
+        }
         #endregion
 
         #region Users

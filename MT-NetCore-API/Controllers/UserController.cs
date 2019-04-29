@@ -105,7 +105,7 @@ namespace MT_NetCore_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string email)
+        public async Task<IActionResult> GetUserForTeam(string email)
         {
             var user = await _tenantRepository.GetUserByEmailAsync(email, TenantId);
             if(user != null)
@@ -113,6 +113,17 @@ namespace MT_NetCore_API.Controllers
             return BadRequest(new ErrorResponse
             {
                 ErrorDescription = "User does not have access to team or Team does not Exist"
+            });
+        }
+
+        public async Task<IActionResult> GetUserProjects(string email)
+        {
+            var projects = await _tenantRepository.GetUserProjects(email, TenantId);
+            if (projects != null)
+                return Ok(projects);
+            return BadRequest(new ErrorResponse
+            {
+                ErrorDescription = "User is not assigned a project in this Team"
             });
         }
 
