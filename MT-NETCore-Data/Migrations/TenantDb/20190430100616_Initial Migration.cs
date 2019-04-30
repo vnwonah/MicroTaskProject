@@ -88,21 +88,20 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     Name = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     FormJson = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<string>(nullable: true),
+                    ProjectId = table.Column<int>(nullable: false),
                     NumberOFSubmissions = table.Column<long>(nullable: false),
                     NumberOFApprovedSubmissions = table.Column<long>(nullable: false),
-                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false),
-                    ProjectId1 = table.Column<int>(nullable: true)
+                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Forms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Forms_Projects_ProjectId1",
-                        column: x => x.ProjectId1,
+                        name: "FK_Forms_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,9 +238,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Forms_ProjectId1",
+                name: "IX_Forms_ProjectId",
                 table: "Forms",
-                column: "ProjectId1");
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_FormId",

@@ -44,7 +44,6 @@ namespace MT_NetCore_Common.Repositories
                 return model.Id;
             }
         }
-
         public async Task<int> AddProjectUser(int userId, int projectId, int tenantId)
         {
             using (var context = CreateContext(tenantId))
@@ -83,6 +82,30 @@ namespace MT_NetCore_Common.Repositories
                 return projects;
             }
         }
+        #endregion
+
+        #region Form
+        public async Task<int> AddFormToProject(Form model, int projectId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                model.ProjectId = projectId;
+                context.Forms.Add(model);
+                await context.SaveChangesAsync();
+                return model.Id;
+            }
+        }
+
+        public async Task<List<Form>> GetProjectForms(int projectId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                var forms = await context.Forms.Where(f => f.ProjectId == projectId).ToListAsync();
+
+                return forms;
+            }
+        }
+
         #endregion
 
         #region Users

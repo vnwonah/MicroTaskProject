@@ -31,6 +31,13 @@ namespace MT_NetCore_Common.Interfaces
 
         #endregion
 
+        #region Forms
+
+        Task<int> AddFormToProject(Form model, int projectId, int tenantId);
+        Task<List<Form>> GetProjectForms(int projectId, int tenantId);
+
+        #endregion
+
         #region Events
 
         //Task<List<EventModel>> GetEventsForTenant(int tenantId);

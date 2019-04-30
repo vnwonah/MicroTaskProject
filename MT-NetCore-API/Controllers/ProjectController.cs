@@ -13,6 +13,10 @@ using MT_NetCore_Data.Entities;
 
 namespace MT_NetCore_API.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
+    [ApiController]
+    [Route("api/[controller]")]
+    [Produces("application/json")]
     public class ProjectController : BaseController
     {
         private readonly ITenantRepository _tenantRepository;
@@ -61,7 +65,7 @@ namespace MT_NetCore_API.Controllers
 
                     await _tenantRepository.AddProjectUser(user.Id, projectId, TenantId);
 
-                    return Ok(new { project_name = model.ProjectName, users = new List<User> { user } });
+                    return Ok(new { id = projectId, project_name = model.ProjectName, users = new List<User> { user } });
                 }
                 catch (Exception ex)
                 {

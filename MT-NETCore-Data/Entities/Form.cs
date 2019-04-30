@@ -12,7 +12,7 @@ namespace MT_NetCore_Data.Entities
 
         public List<Location> CollectionLocations { get; set; }
         
-        public string ProjectId { get; set; }
+        public int ProjectId { get; set; }
         
         public List<User> Supervisors { get; set; }
 

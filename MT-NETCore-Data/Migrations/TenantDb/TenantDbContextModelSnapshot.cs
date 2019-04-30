@@ -15,7 +15,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -37,9 +37,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<long>("NumberOFUnApprovedSubmissions");
 
-                    b.Property<string>("ProjectId");
-
-                    b.Property<int?>("ProjectId1");
+                    b.Property<int>("ProjectId");
 
                     b.Property<string>("Title");
 
@@ -53,7 +51,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId1");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Forms");
                 });
@@ -290,7 +288,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Project")
                         .WithMany("Forms")
-                        .HasForeignKey("ProjectId1");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
