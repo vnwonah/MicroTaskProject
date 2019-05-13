@@ -216,6 +216,7 @@ namespace MT_NetCore_API
             services.AddSingleton<ITenantRepository>(p => new TenantRepository(GetBasicSqlConnectionString(), Configuration));
             services.AddSingleton(Configuration);
             services.AddSingleton<IRequestContext, RequestContextAdapter>();
+            services.AddTransient<ICompressionSystem, GzipCompression>();
 
 
             //create instance of utilities class

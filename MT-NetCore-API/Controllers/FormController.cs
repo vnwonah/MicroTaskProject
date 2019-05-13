@@ -19,14 +19,19 @@ namespace MT_NetCore_API.Controllers
     {
         private readonly ITenantRepository _tenantRepository;
         private readonly IUserService _userService;
+        private ICompressionSystem _compressionSystem;
+        
 
         public FormController(
             ITenantRepository tenantRepository,
             IUserService userService,
-            IRequestContext requestContext) : base(requestContext)
+            IRequestContext requestContext,
+            ICompressionSystem compressionSystem) 
+            : base(requestContext)
         {
             _tenantRepository = tenantRepository;
             _userService = userService;
+            _compressionSystem = compressionSystem;
         }
 
         [HttpGet("GetProjectForms")]
@@ -54,7 +59,7 @@ namespace MT_NetCore_API.Controllers
             {
                 try
                 {
-                    var form = new Form { Name = model.FormName };
+                    var form = new Form { Name = model.FormName, FormJson = model.FormJson.ToString(),  };
 
                     var formId = await _tenantRepository.AddFormToProject(form, model.ProjectId, TenantId);
 

@@ -135,17 +135,9 @@ namespace MT_NetCore_Common.Repositories
         {
             using (var context = CreateContext(tenantId))
             {
-                try
-                {
-                    var user = await context.Users.FirstOrDefaultAsync(i => i.Email == email && i.TeamId == tenantId);
-                    return user;
-                }
-                catch (System.Exception e)
-                {
+                var user = await context.Users.FirstOrDefaultAsync(i => i.Email == email && i.TeamId == tenantId);
+                return user;
 
-                    throw;
-                }
-                
             }
         }
 
