@@ -106,6 +106,16 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
+        public async Task<List<Form>> GetProjectFormsForUserAsync(string email, int projectId, int tenantId)
+        {
+            var user = await GetUserByEmailAsync(email, tenantId);
+            using (var context = CreateContext(tenantId))
+            {
+                var forms = await context.Forms.Where(fm => fm.ProjectId == projectId && fm.Users.Contains(user)).ToListAsync();
+                return forms;
+            }
+        }
+
         #endregion
 
         #region Users
@@ -125,8 +135,17 @@ namespace MT_NetCore_Common.Repositories
         {
             using (var context = CreateContext(tenantId))
             {
-                var user = await context.Users.FirstOrDefaultAsync(i => i.Email == email && i.TeamId == tenantId);
-                return user;
+                try
+                {
+                    var user = await context.Users.FirstOrDefaultAsync(i => i.Email == email && i.TeamId == tenantId);
+                    return user;
+                }
+                catch (System.Exception e)
+                {
+
+                    throw;
+                }
+                
             }
         }
 

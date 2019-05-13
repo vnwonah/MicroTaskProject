@@ -35,6 +35,7 @@ namespace MT_NetCore_Common.Interfaces
 
         Task<int> AddFormToProject(Form model, int projectId, int tenantId);
         Task<List<Form>> GetProjectForms(int projectId, int tenantId);
+        Task<List<Form>> GetProjectFormsForUserAsync(string email, int projectId, int tenantId);
 
         #endregion
 

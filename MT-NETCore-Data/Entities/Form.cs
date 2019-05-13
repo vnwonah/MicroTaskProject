@@ -14,7 +14,7 @@ namespace MT_NetCore_Data.Entities
         
         public int ProjectId { get; set; }
         
-        public List<User> Supervisors { get; set; }
+        public List<User> Users { get; set; }
 
         public long NumberOFSubmissions { get; set; }
 

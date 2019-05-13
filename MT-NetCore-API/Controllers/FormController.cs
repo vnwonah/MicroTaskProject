@@ -38,6 +38,15 @@ namespace MT_NetCore_API.Controllers
             return NotFound();
         }
 
+        [HttpGet("GetProjectFormsForUser")]
+        public async Task<IActionResult> GetProjectFormsForUser(string email, int projectId)
+        {
+            var forms = await _tenantRepository.GetProjectForms(projectId, TenantId);
+            if (forms != null)
+                return Ok(forms);
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateFormModel model)
         {
