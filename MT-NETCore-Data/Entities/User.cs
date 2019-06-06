@@ -26,6 +26,8 @@ namespace MT_NetCore_Data.Entities
         public int TeamId { get; set; }
         [JsonProperty("project_users")]
         public ICollection<ProjectUser> ProjectUsers { get; set; }
+        [JsonProperty("form_users")]
+        public ICollection<FormUser> FormUsers { get; set; }
         [JsonProperty("email")]
         public string Email { get; set; }
         [JsonProperty("application_user_id")]

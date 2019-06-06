@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using MT_NetCore_Utils.Enums;
 
 namespace MT_NetCore_Data.Entities
 {
-    //Join Table for many to many relationship between Projects and Users.
-    public class ProjectUser 
+    public class FormUser
     {
         public int UserId { get; set; }
         public User User { get; set; }
-        public int ProjectId { get; set; }
-        public Project Project { get; set; }
+        public int FormId { get; set; }
+        public Form Form { get; set; }
         public Role UserRole { get; set; }
-
 
     }
 }

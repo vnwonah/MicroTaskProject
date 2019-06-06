@@ -26,6 +26,8 @@ namespace MT_NetCore_Data.Entities
         public long NumberOFApprovedSubmissions { get; set; }
 
         public long NumberOFUnApprovedSubmissions { get; set; }
+        [JsonProperty("form_users")]
+        public ICollection<FormUser> FormUsers { get; set; }
 
     }
 

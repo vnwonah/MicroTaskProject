@@ -69,7 +69,21 @@ namespace MT_NetCore_Data.TenantsDB
                 .HasOne(pu => pu.User)
                 .WithMany(pu => pu.ProjectUsers)
                 .HasForeignKey(pu => pu.UserId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FormUser>()
+                .HasKey(fu => new { fu.FormId, fu.UserId });
+            modelBuilder.Entity<FormUser>()
+                .HasOne(fu => fu.Form)
+                .WithMany(fu => fu.FormUsers)
+                .HasForeignKey(fu => fu.FormId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FormUser>()
+                .HasOne(fu => fu.User)
+                .WithMany(fu => fu.FormUsers)
+                .HasForeignKey(fu => fu.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public virtual DbSet<Form> Forms { get; set; }
