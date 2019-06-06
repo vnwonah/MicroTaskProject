@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using MT_NetCore_Utils.Enums;
 
 namespace MT_NetCore_Data.Entities
 {
@@ -32,6 +33,7 @@ namespace MT_NetCore_Data.Entities
         public string Email { get; set; }
         [JsonProperty("application_user_id")]
         public string ApplicationUserId { get; set; }
+        public Role UseRole { get; set; }
     }
 
 
