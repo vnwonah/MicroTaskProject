@@ -19,8 +19,11 @@
   <ItemGroup>
     <Folder Include="CatalogDB\" />
     <Folder Include="TenantsDB\" />
-    <Folder Include="Entities\" />
     <Folder Include="IdentityDB\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MT-NetCore-Utils\MT-NetCore-Utils.csproj" />
   </ItemGroup>
     
 </Project>

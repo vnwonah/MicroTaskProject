@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MT_NetCore_Data.Migrations.TenantDb
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20190430100616_Initial Migration")]
+    [Migration("20190606053622_Initial Migration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,21 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Forms");
+                });
+
+            modelBuilder.Entity("MT_NetCore_Data.Entities.FormUser", b =>
+                {
+                    b.Property<int>("FormId");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("UserRole");
+
+                    b.HasKey("FormId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FormUsers");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
@@ -125,6 +140,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.Property<int>("ProjectId");
 
                     b.Property<int>("UserId");
+
+                    b.Property<int>("UserRole");
 
                     b.HasKey("ProjectId", "UserId");
 
@@ -294,6 +311,19 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MT_NetCore_Data.Entities.FormUser", b =>
+                {
+                    b.HasOne("MT_NetCore_Data.Entities.Form", "Form")
+                        .WithMany("FormUsers")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MT_NetCore_Data.Entities.User", "User")
+                        .WithMany("FormUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Form")
@@ -332,7 +362,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
             modelBuilder.Entity("MT_NetCore_Data.Entities.User", b =>
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Form")
-                        .WithMany("Supervisors")
+                        .WithMany("Users")
                         .HasForeignKey("FormId");
 
                     b.HasOne("MT_NetCore_Data.Entities.Location", "PrimaryLocation")

@@ -56,6 +56,21 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.ToTable("Forms");
                 });
 
+            modelBuilder.Entity("MT_NetCore_Data.Entities.FormUser", b =>
+                {
+                    b.Property<int>("FormId");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("UserRole");
+
+                    b.HasKey("FormId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FormUsers");
+                });
+
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -123,6 +138,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.Property<int>("ProjectId");
 
                     b.Property<int>("UserId");
+
+                    b.Property<int>("UserRole");
 
                     b.HasKey("ProjectId", "UserId");
 
@@ -292,6 +309,19 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MT_NetCore_Data.Entities.FormUser", b =>
+                {
+                    b.HasOne("MT_NetCore_Data.Entities.Form", "Form")
+                        .WithMany("FormUsers")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MT_NetCore_Data.Entities.User", "User")
+                        .WithMany("FormUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Form")
@@ -330,7 +360,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
             modelBuilder.Entity("MT_NetCore_Data.Entities.User", b =>
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Form")
-                        .WithMany("Supervisors")
+                        .WithMany("Users")
                         .HasForeignKey("FormId");
 
                     b.HasOne("MT_NetCore_Data.Entities.Location", "PrimaryLocation")

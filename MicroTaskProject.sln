@@ -1,18 +1,14 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Data", "MT-NETCore-Data\MT-NetCore-Data.csproj", "{F5CD277B-C674-4279-872A-BB7C8BF6DD63}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT-NetCore-Data", "MT-NETCore-Data\MT-NetCore-Data.csproj", "{F5CD277B-C674-4279-872A-BB7C8BF6DD63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Common", "MT-NetCore-Common\MT-NetCore-Common.csproj", "{2032A0E5-4441-4F08-AB08-AD6E494B69A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT-NetCore-Common", "MT-NetCore-Common\MT-NetCore-Common.csproj", "{2032A0E5-4441-4F08-AB08-AD6E494B69A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-Utils", "MT-NetCore-Utils\MT-NetCore-Utils.csproj", "{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT-NetCore-Utils", "MT-NetCore-Utils\MT-NetCore-Utils.csproj", "{DF33F10B-AD6C-4354-AD5D-2948A09A6DE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MT-NetCore-API", "MT-NetCore-API\MT-NetCore-API.csproj", "{E243B6F9-64D4-4E97-AF46-B07C0129C87A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D69480CD-F88F-4837-8575-C7CE083573BC}"
-	ProjectSection(SolutionItems) = preProject
-		NewTenantProcess.md = NewTenantProcess.md
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT-NetCore-API", "MT-NetCore-API\MT-NetCore-API.csproj", "{E243B6F9-64D4-4E97-AF46-B07C0129C87A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +33,10 @@ Global
 		{E243B6F9-64D4-4E97-AF46-B07C0129C87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E243B6F9-64D4-4E97-AF46-B07C0129C87A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54FA089F-7338-4454-983B-5AB06B352696}
 	EndGlobalSection
 EndGlobal

@@ -151,9 +151,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Submissions", x => x.Id);
+                    table.PrimaryKey("PK_Records", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Submissions_Locations_LocationId",
+                        name: "FK_Records_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
@@ -214,11 +214,37 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "FormUsers",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    FormId = table.Column<int>(nullable: false),
+                    UserRole = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormUsers", x => new { x.FormId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_FormUsers_Forms_FormId",
+                        column: x => x.FormId,
+                        principalTable: "Forms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FormUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProjectUsers",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false)
+                    ProjectId = table.Column<int>(nullable: false),
+                    UserRole = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,6 +269,11 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FormUsers_UserId",
+                table: "FormUsers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Locations_FormId",
                 table: "Locations",
                 column: "FormId");
@@ -258,7 +289,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Submissions_LocationId",
+                name: "IX_Records_LocationId",
                 table: "Records",
                 column: "LocationId");
 
@@ -285,6 +316,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "FormUsers");
+
             migrationBuilder.DropTable(
                 name: "ProjectUsers");
 

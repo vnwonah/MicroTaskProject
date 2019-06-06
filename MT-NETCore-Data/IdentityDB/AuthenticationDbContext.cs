@@ -6,8 +6,8 @@ namespace MT_NetCore_Data.IdentityDB
     public class AuthenticationDbContext : IdentityDbContext<ApplicationUser>
     {
             
-        public AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> _options)
-            : base(_options)
+        public AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> options)
+            : base(options)
         {
         }
     }
