@@ -35,6 +35,16 @@ namespace MT_NetCore_API.Controllers
             _compressionSystem = compressionSystem;
         }
 
+        [HttpGet("GetAllFormsForUser")]
+        public async Task<IActionResult> GetAllForms()
+        {
+            var user = await _userService.GetCurrentUserAsync(TenantId);
+            var forms = _tenantRepository.GetAllFormsForUser(user.Email, TenantId);
+            if (forms != null)
+                return Ok(forms);
+            return NotFound();
+        }
+
         [HttpGet("GetProjectForms")]
         public async Task<IActionResult> GetProjectForms(int projectId)
         {
