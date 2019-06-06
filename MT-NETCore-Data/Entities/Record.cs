@@ -2,7 +2,7 @@
 
 namespace MT_NetCore_Data.Entities
 {
-    public class Submission : BaseEntity
+    public class Record : BaseEntity
     {
         public byte[] FormId { get; set; }
 

@@ -134,7 +134,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Submissions",
+                name: "Records",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -259,7 +259,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_LocationId",
-                table: "Submissions",
+                table: "Records",
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
@@ -289,7 +289,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "ProjectUsers");
 
             migrationBuilder.DropTable(
-                name: "Submissions");
+                name: "Records");
 
             migrationBuilder.DropTable(
                 name: "Users");

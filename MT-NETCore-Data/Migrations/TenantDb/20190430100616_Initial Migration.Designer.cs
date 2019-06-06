@@ -133,7 +133,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.ToTable("ProjectUsers");
                 });
 
-            modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>
+            modelBuilder.Entity("MT_NetCore_Data.Entities.Record", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,7 +161,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Submissions");
+                    b.ToTable("Records");
                 });
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Team", b =>
@@ -322,7 +322,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("MT_NetCore_Data.Entities.Submission", b =>
+            modelBuilder.Entity("MT_NetCore_Data.Entities.Record", b =>
                 {
                     b.HasOne("MT_NetCore_Data.Entities.Location", "Location")
                         .WithMany()

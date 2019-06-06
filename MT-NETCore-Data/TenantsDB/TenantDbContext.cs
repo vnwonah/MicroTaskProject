@@ -87,12 +87,13 @@ namespace MT_NetCore_Data.TenantsDB
         }
 
         public virtual DbSet<Form> Forms { get; set; }
-        public virtual DbSet<Submission> Submissions { get; set; }
+        public virtual DbSet<Record> Records { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ProjectUser> ProjectUsers { get; set; }
+        public virtual DbSet<FormUser> FormUsers { get; set; }
 
     }
 }
