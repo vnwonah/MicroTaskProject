@@ -33,7 +33,7 @@ namespace MT_NetCore_API.Services
                User.Claims.FirstOrDefault(
                    c => c.Type == 
                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
-               .Value);
+               ?.Value);
 
         }
 

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MT_NetCore_Utils.Enums;
 
 namespace MT_NetCore_API.Controllers
 {
@@ -59,9 +60,13 @@ namespace MT_NetCore_API.Controllers
             {
                 try
                 {
-                    var form = new Form { Name = model.FormName, FormJson = model.FormJson.ToString(),  };
+                    var form = new Form { Name = model.FormName, FormJson = model.FormJson.ToString()};
 
                     var formId = await _tenantRepository.AddFormToProject(form, model.ProjectId, TenantId);
+
+                    var user = await _userService.GetCurrentUserAsync(TenantId);
+
+                    await _tenantRepository.AddUserToForm(user.Id, formId, TenantId, Role.SuperAdministrator);
 
                     return Ok(new { id = formId, form_name = model.FormName });
                 }

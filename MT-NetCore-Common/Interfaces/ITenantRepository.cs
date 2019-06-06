@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MT_NetCore_Data.Entities;
+using MT_NetCore_Utils.Enums;
 
 namespace MT_NetCore_Common.Interfaces
 {
@@ -26,7 +27,7 @@ namespace MT_NetCore_Common.Interfaces
         #region Projects
 
         Task<int> AddProjectToTeam(Project model, int tenantId);
-        Task<int> AddProjectUser(int userId, int projectId, int tenantId);
+        Task<int> AddProjectUser(int userId, int projectId, int tenantId, Role role);
         Task<Project> GetProjectById(int id, int tenantId);
 
         #endregion
@@ -34,8 +35,10 @@ namespace MT_NetCore_Common.Interfaces
         #region Forms
 
         Task<int> AddFormToProject(Form model, int projectId, int tenantId);
+        Task<int> AddUserToForm(int userId, int formId, int tenantId, Role role);
         Task<List<Form>> GetProjectForms(int projectId, int tenantId);
         Task<List<Form>> GetProjectFormsForUserAsync(string email, int projectId, int tenantId);
+        Task<List<Form>> GetAllFormsForUser(string email, int tenantId);
 
         #endregion
 
@@ -56,6 +59,7 @@ namespace MT_NetCore_Common.Interfaces
         #region TicketPurchases
 
         //Task<int> AddTicketPurchase(TicketPurchaseModel ticketPurchaseModel, int tenantId);
+
         #endregion
 
         #region Tickets

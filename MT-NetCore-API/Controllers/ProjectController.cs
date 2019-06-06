@@ -8,6 +8,7 @@ using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.RequestModels;
 using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Data.Entities;
+using MT_NetCore_Utils.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -63,7 +64,7 @@ namespace MT_NetCore_API.Controllers
 
                     var user = await _userService.GetCurrentUserAsync(TenantId);
 
-                    await _tenantRepository.AddProjectUser(user.Id, projectId, TenantId);
+                    await _tenantRepository.AddProjectUser(user.Id, projectId, TenantId, Role.SuperAdministrator);
 
                     return Ok(new { id = projectId, project_name = model.ProjectName, users = new List<User> { user } });
                 }

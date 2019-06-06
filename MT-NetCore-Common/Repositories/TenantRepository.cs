@@ -10,6 +10,7 @@ using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Common.Utilities;
 using MT_NetCore_Data.Entities;
 using MT_NetCore_Data.TenantsDB;
+using MT_NetCore_Utils.Enums;
 using Newtonsoft.Json;
 
 namespace MT_NetCore_Common.Repositories
@@ -44,11 +45,11 @@ namespace MT_NetCore_Common.Repositories
                 return model.Id;
             }
         }
-        public async Task<int> AddProjectUser(int userId, int projectId, int tenantId)
+        public async Task<int> AddProjectUser(int userId, int projectId, int tenantId, Role role)
         {
             using (var context = CreateContext(tenantId))
             {
-                var pu = new ProjectUser { UserId = userId, ProjectId = projectId };
+                var pu = new ProjectUser { UserId = userId, ProjectId = projectId, UserRole = role};
                 context.ProjectUsers.Add(pu);
                 await context.SaveChangesAsync();
                 return pu.ProjectId;
@@ -96,6 +97,27 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
+        public async Task<int> AddUserToForm(int userId, int formId, int tenantId, Role role)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                var fu = new FormUser { UserId = userId, FormId = formId, UserRole = role };
+                context.FormUsers.Add(fu);
+                await context.SaveChangesAsync();
+                return fu.FormId;
+            }
+        }
+        public async Task<List<Form>> GetAllFormsForUser(string email, int tenantId)
+        {
+            var user = await GetUserByEmailAsync(email, tenantId);
+
+            using (var context = CreateContext(tenantId))
+            {
+                var forms = await context.Forms.Where(fm => fm.Users.Contains(user)).ToListAsync();
+                return forms;
+            }
+        }
+
         public async Task<List<Form>> GetProjectForms(int projectId, int tenantId)
         {
             using (var context = CreateContext(tenantId))
@@ -115,6 +137,8 @@ namespace MT_NetCore_Common.Repositories
                 return forms;
             }
         }
+
+       
 
         #endregion
 

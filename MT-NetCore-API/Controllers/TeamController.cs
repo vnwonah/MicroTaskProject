@@ -11,6 +11,7 @@ using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Common.Models;
 using MT_NetCore_Common.Utilities;
 using MT_NetCore_Data.Entities;
+using MT_NetCore_Utils.Enums;
 using static MT_NetCore_Common.Utilities.AppConfig;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -104,7 +105,7 @@ namespace MT_NetCore_API.Controllers
 
                     //Add first user to team. Team Owner!
                     var applicationUser = await _userService.GetApplicationUserAsync();
-                    var user = new User { ApplicationUserId = applicationUser.Id, Email = applicationUser.Email };
+                    var user = new User { ApplicationUserId = applicationUser.Id, Email = applicationUser.Email, UseRole = Role.SuperAdministrator};
                     await _tenantRepository.AddUserToTeam(user, team.Id);
 
 
