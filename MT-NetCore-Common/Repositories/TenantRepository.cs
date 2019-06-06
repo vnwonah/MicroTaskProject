@@ -113,7 +113,7 @@ namespace MT_NetCore_Common.Repositories
 
             using (var context = CreateContext(tenantId))
             {
-                var forms = await context.Forms.Where(fm => fm.Users.Contains(user)).ToListAsync();
+                var forms = await context.Forms.Where(fm => fm.FormUsers.Any(u => u.UserId == user.Id)).ToListAsync();
                 return forms;
             }
         }
@@ -133,7 +133,7 @@ namespace MT_NetCore_Common.Repositories
             var user = await GetUserByEmailAsync(email, tenantId);
             using (var context = CreateContext(tenantId))
             {
-                var forms = await context.Forms.Where(fm => fm.ProjectId == projectId && fm.Users.Contains(user)).ToListAsync();
+                var forms = await context.Forms.Where(fm => fm.ProjectId == projectId && fm.FormUsers.Any(u => u.UserId == user.Id)).ToListAsync();
                 return forms;
             }
         }

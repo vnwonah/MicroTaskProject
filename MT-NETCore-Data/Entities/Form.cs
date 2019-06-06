@@ -19,8 +19,6 @@ namespace MT_NetCore_Data.Entities
         [JsonProperty("project_id")]
         public int ProjectId { get; set; }
         
-        public List<User> Users { get; set; }
-
         public long NumberOFSubmissions { get; set; }
 
         public long NumberOFApprovedSubmissions { get; set; }

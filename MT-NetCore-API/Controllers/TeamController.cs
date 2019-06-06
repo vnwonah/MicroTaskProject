@@ -105,7 +105,7 @@ namespace MT_NetCore_API.Controllers
 
                     //Add first user to team. Team Owner!
                     var applicationUser = await _userService.GetApplicationUserAsync();
-                    var user = new User { ApplicationUserId = applicationUser.Id, Email = applicationUser.Email, UseRole = Role.SuperAdministrator};
+                    var user = new User { ApplicationUserId = applicationUser.Id, Email = applicationUser.Email, UserRole = Role.SuperAdministrator};
                     await _tenantRepository.AddUserToTeam(user, team.Id);
 
 

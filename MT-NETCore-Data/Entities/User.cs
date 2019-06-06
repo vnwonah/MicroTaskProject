@@ -33,7 +33,7 @@ namespace MT_NetCore_Data.Entities
         public string Email { get; set; }
         [JsonProperty("application_user_id")]
         public string ApplicationUserId { get; set; }
-        public Role UseRole { get; set; }
+        public Role UserRole { get; set; }
     }
 
 

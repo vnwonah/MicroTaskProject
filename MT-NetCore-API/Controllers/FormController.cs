@@ -39,28 +39,28 @@ namespace MT_NetCore_API.Controllers
         public async Task<IActionResult> GetAllForms()
         {
             var user = await _userService.GetCurrentUserAsync(TenantId);
-            var forms = _tenantRepository.GetAllFormsForUser(user.Email, TenantId);
-            if (forms != null)
+            var forms = await _tenantRepository.GetAllFormsForUser(user.Email, TenantId);
+            if (forms.Any())
                 return Ok(forms);
-            return NotFound();
+            return NoContent();
         }
 
         [HttpGet("GetProjectForms")]
         public async Task<IActionResult> GetProjectForms(int projectId)
         {
             var forms = await _tenantRepository.GetProjectForms(projectId, TenantId);
-            if (forms != null)
+            if (forms.Any())
                 return Ok(forms);
-            return NotFound();
+            return NoContent();
         }
 
         [HttpGet("GetProjectFormsForUser")]
         public async Task<IActionResult> GetProjectFormsForUser(string email, int projectId)
         {
             var forms = await _tenantRepository.GetProjectForms(projectId, TenantId);
-            if (forms != null)
+            if (forms.Any())
                 return Ok(forms);
-            return NotFound();
+            return NoContent();
         }
 
         [HttpPost]
