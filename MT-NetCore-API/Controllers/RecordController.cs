@@ -71,30 +71,42 @@ namespace MT_NetCore_API.Controllers
         [HttpPatch("approve")]
         public async Task<IActionResult> Approve(ChangeRecordStatusModel model)
         {
+            //confirm if user can perform action Vincent!
+
             if (!ModelState.IsValid) return BadRequest();
-            throw new NotImplementedException();
+            await _tenantRepository.UpdateRecordStatus(model.RecordId, RecordStatus.Approved, model.Message, TenantId);
+            return new OkObjectResult(new {record_id = model.RecordId});
         }
 
 
         [HttpPatch("reject")]
         public async Task<IActionResult> Reject(ChangeRecordStatusModel model)
         {
+            //confirm if user can perform action Vincent!
+
             if (!ModelState.IsValid) return BadRequest();
-            throw new NotImplementedException();
+            await _tenantRepository.UpdateRecordStatus(model.RecordId, RecordStatus.Rejected, model.Message, TenantId);
+            return new OkObjectResult(new { record_id = model.RecordId });
         }
 
         [HttpPatch("invalidate")]
         public async Task<IActionResult> Invalidate(ChangeRecordStatusModel model)
         {
+            //confirm if user can perform action Vincent!
+
             if (!ModelState.IsValid) return BadRequest();
-            throw new NotImplementedException();
+            await _tenantRepository.UpdateRecordStatus(model.RecordId, RecordStatus.Invalidated, model.Message, TenantId);
+            return new OkObjectResult(new { record_id = model.RecordId });
         }
 
         [HttpPatch("delete")]
         public async Task<IActionResult> Delete(ChangeRecordStatusModel model)
         {
+            //confirm if user can perform action Vincent!
+
             if (!ModelState.IsValid) return BadRequest();
-            throw new NotImplementedException();
+            await _tenantRepository.UpdateRecordStatus(model.RecordId, RecordStatus.Deleted, model.Message, TenantId);
+            return new OkObjectResult(new { record_id = model.RecordId });
         }
     }
 }

@@ -157,6 +157,16 @@ namespace MT_NetCore_Common.Repositories
                 return record.Id;
             }
         }
+
+        public async Task<long> UpdateRecordStatus(long recordId, RecordStatus status, string message, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                await context.Database.ExecuteSqlCommandAsync(
+                    $"EXEC sp_UpdateRecordStatus {recordId}, {status}, {message}");
+                return recordId;
+            }
+        }
         #endregion
 
         #region Users

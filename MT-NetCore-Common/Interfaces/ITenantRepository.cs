@@ -46,6 +46,7 @@ namespace MT_NetCore_Common.Interfaces
         #region Records
 
         Task<long> AddRecord(Record record, int tenantId);
+        Task<long> UpdateRecordStatus(long recordId, RecordStatus status, string message, int tenantId);
 
         #endregion
 
