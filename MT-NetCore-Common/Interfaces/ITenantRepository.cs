@@ -47,6 +47,7 @@ namespace MT_NetCore_Common.Interfaces
 
         Task<long> AddRecord(Record record, int tenantId);
         Task<long> UpdateRecordStatus(long recordId, RecordStatus status, string message, int tenantId);
+        Task<List<Record>> GetRejectedAndInvalidatedRecordsForUser(long userId, int tenantId);
 
         #endregion
 

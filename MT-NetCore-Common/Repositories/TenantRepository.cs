@@ -167,6 +167,18 @@ namespace MT_NetCore_Common.Repositories
                 return recordId;
             }
         }
+
+        public async Task<List<Record>> GetRejectedAndInvalidatedRecordsForUser(long userId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                return await context.Records.Where(r => r.UserId == userId &&
+                                                        (r.Status == RecordStatus.Rejected ||
+                                                         r.Status == RecordStatus.Invalidated))
+                    .Include(r => r.Location)
+                    .ToListAsync();
+            }
+        }
         #endregion
 
         #region Users

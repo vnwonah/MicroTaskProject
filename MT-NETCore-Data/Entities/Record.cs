@@ -7,7 +7,7 @@ namespace MT_NetCore_Data.Entities
     {
         public long FormId { get; set; }
         public string RecordJson { get; set; }
-        public Location Location { get; set; }
+        public virtual Location Location { get; set; }
         public long UserId { get; set; }
         public RecordStatus Status { get; set; }
         public string Message { get; set; }

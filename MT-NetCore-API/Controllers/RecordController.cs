@@ -32,6 +32,17 @@ namespace MT_NetCore_API.Controllers
             _tenantRepository = tenantRepository;
         }
 
+        [HttpGet("GetRejectedAndInvalidatedRecordsForUser")]
+        public async Task<IActionResult> GetRejectedAndInvalidatedRecordsForUser()
+        {
+            var user = await _userService.GetCurrentUserAsync(TenantId);
+            if (user == null) return BadRequest();
+            var records = await _tenantRepository.GetRejectedAndInvalidatedRecordsForUser(user.Id, TenantId);
+            if (records.Any())
+                return new OkObjectResult(records);
+            return NoContent();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateRecordModel model)
         {
@@ -68,7 +79,7 @@ namespace MT_NetCore_API.Controllers
             
         }
 
-        [HttpPatch("approve")]
+        [HttpPatch("Approve")]
         public async Task<IActionResult> Approve(ChangeRecordStatusModel model)
         {
             //confirm if user can perform action Vincent!
@@ -79,7 +90,7 @@ namespace MT_NetCore_API.Controllers
         }
 
 
-        [HttpPatch("reject")]
+        [HttpPatch("Reject")]
         public async Task<IActionResult> Reject(ChangeRecordStatusModel model)
         {
             //confirm if user can perform action Vincent!
@@ -89,7 +100,7 @@ namespace MT_NetCore_API.Controllers
             return new OkObjectResult(new { record_id = model.RecordId });
         }
 
-        [HttpPatch("invalidate")]
+        [HttpPatch("Invalidate")]
         public async Task<IActionResult> Invalidate(ChangeRecordStatusModel model)
         {
             //confirm if user can perform action Vincent!
@@ -99,7 +110,7 @@ namespace MT_NetCore_API.Controllers
             return new OkObjectResult(new { record_id = model.RecordId });
         }
 
-        [HttpPatch("delete")]
+        [HttpPatch("Delete")]
         public async Task<IActionResult> Delete(ChangeRecordStatusModel model)
         {
             //confirm if user can perform action Vincent!
