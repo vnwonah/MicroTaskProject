@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MT_NetCore_Data.Migrations.TenantDb
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20190606063759_Removed Users from Form")]
-    partial class RemovedUsersfromForm
+    [Migration("20190606174456_Initial Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,23 +23,27 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Form", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long>("ApprovedCount");
+
+                    b.Property<long>("DeletedCount");
+
                     b.Property<string>("FormJson");
+
+                    b.Property<long>("InvalidatedCount");
 
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
-                    b.Property<long>("NumberOFApprovedSubmissions");
+                    b.Property<long>("ProjectId");
 
-                    b.Property<long>("NumberOFSubmissions");
+                    b.Property<long>("RejectedCount");
 
-                    b.Property<long>("NumberOFUnApprovedSubmissions");
-
-                    b.Property<int>("ProjectId");
+                    b.Property<long>("SubmissionCount");
 
                     b.Property<string>("Title");
 
@@ -60,9 +64,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.FormUser", b =>
                 {
-                    b.Property<int>("FormId");
+                    b.Property<long>("FormId");
 
-                    b.Property<int>("UserId");
+                    b.Property<long>("UserId");
 
                     b.Property<int>("UserRole");
 
@@ -75,23 +79,17 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Location", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
-
-                    b.Property<string>("Country");
-
-                    b.Property<int?>("FormId");
+                    b.Property<long?>("FormId");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Latitude");
+                    b.Property<double>("Latitude");
 
-                    b.Property<string>("Longitude");
-
-                    b.Property<string>("State");
+                    b.Property<double>("Longitude");
 
                     b.Property<DateTime>("UTCCreatedAt");
 
@@ -110,7 +108,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Project", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -137,9 +135,9 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.ProjectUser", b =>
                 {
-                    b.Property<int>("ProjectId");
+                    b.Property<long>("ProjectId");
 
-                    b.Property<int>("UserId");
+                    b.Property<long>("UserId");
 
                     b.Property<int>("UserRole");
 
@@ -152,19 +150,19 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.Record", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("FormId");
+                    b.Property<long>("FormId");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<int?>("LocationId");
+                    b.Property<long?>("LocationId");
 
-                    b.Property<string>("SubmissionJson");
+                    b.Property<string>("RecordJson");
 
-                    b.Property<long>("SubmissionPosition");
+                    b.Property<int>("Status");
 
                     b.Property<DateTime>("UTCCreatedAt");
 
@@ -173,6 +171,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     b.Property<DateTime?>("UTCModifiedAt");
 
                     b.Property<string>("UpdatedBy");
+
+                    b.Property<long>("UserId");
 
                     b.HasKey("Id");
 
@@ -252,31 +252,19 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
             modelBuilder.Entity("MT_NetCore_Data.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("BVNNumber");
-
                     b.Property<string>("Email");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("Gender");
-
-                    b.Property<string>("IdString");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastName");
+                    b.Property<long?>("PrimaryLocationId");
 
-                    b.Property<string>("PhotoString");
-
-                    b.Property<int?>("PrimaryLocationId");
-
-                    b.Property<int?>("SecondaryLocationId");
+                    b.Property<long?>("SecondaryLocationId");
 
                     b.Property<int>("TeamId");
 
@@ -288,7 +276,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
 
                     b.Property<string>("UpdatedBy");
 
-                    b.Property<int>("UseRole");
+                    b.Property<int>("UserRole");
 
                     b.HasKey("Id");
 

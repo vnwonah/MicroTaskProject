@@ -7,9 +7,9 @@ namespace MT_NetCore_Data.Entities
 {
     public class FormUser
     {
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public User User { get; set; }
-        public int FormId { get; set; }
+        public long FormId { get; set; }
         public Form Form { get; set; }
         public Role UserRole { get; set; }
 

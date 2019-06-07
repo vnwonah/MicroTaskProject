@@ -1,11 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MT_NetCore_Data.Entities
 {
-    public class Team : BaseEntity
+    public class Team
     {
+        [Key]
+        public int Id { get; set; }
+
+        public string UpdatedBy { get; set; }
+
+        public DateTime UTCCreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime? UTCModifiedAt { get; set; }
+
+        public DateTime? UTCDeletedAt { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }

@@ -35,7 +35,7 @@ namespace MT_NetCore_Common.Repositories
 
         #region Project
 
-        public async Task<int> AddProjectToTeam(Project model, int tenantId)
+        public async Task<long> AddProjectToTeam(Project model, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -45,7 +45,7 @@ namespace MT_NetCore_Common.Repositories
                 return model.Id;
             }
         }
-        public async Task<int> AddProjectUser(int userId, int projectId, int tenantId, Role role)
+        public async Task<long> AddProjectUser(long userId, long projectId, int tenantId, Role role)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -57,7 +57,7 @@ namespace MT_NetCore_Common.Repositories
         }
 
 
-        public async Task<Project> GetProjectById(int id, int tenantId)
+        public async Task<Project> GetProjectById(long id, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -72,12 +72,7 @@ namespace MT_NetCore_Common.Repositories
             using (var context = CreateContext(tenantId))
             {
                 var projects = await context.Projects.Where(p => p.ProjectUsers.Any(u => u.UserId == user.Id))
-                    //.Select(
-                    //p => new
-                    //{
-                    //    p.Id,
-                    //    p.Name
-                    //})
+                 
                     .ToListAsync();
 
                 return projects;
@@ -86,7 +81,7 @@ namespace MT_NetCore_Common.Repositories
         #endregion
 
         #region Form
-        public async Task<int> AddFormToProject(Form model, int projectId, int tenantId)
+        public async Task<long> AddFormToProject(Form model, long projectId, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -97,7 +92,7 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
-        public async Task<int> AddUserToForm(int userId, int formId, int tenantId, Role role)
+        public async Task<long> AddUserToForm(long userId, long formId, int tenantId, Role role)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -118,7 +113,16 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
-        public async Task<List<Form>> GetProjectForms(int projectId, int tenantId)
+        public async Task<Form> GetFormForUserByFormId(long userId, long formId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                return await context.Forms.FirstOrDefaultAsync(fm => fm.FormUsers.Any(u => u.UserId == userId && u.FormId == formId));
+                
+            }
+        }
+
+        public async Task<List<Form>> GetProjectForms(long projectId, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -128,7 +132,7 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
-        public async Task<List<Form>> GetProjectFormsForUserAsync(string email, int projectId, int tenantId)
+        public async Task<List<Form>> GetProjectFormsForUserAsync(string email, long projectId, int tenantId)
         {
             var user = await GetUserByEmailAsync(email, tenantId);
             using (var context = CreateContext(tenantId))
@@ -138,13 +142,26 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
-       
 
+
+        #endregion
+
+        #region Records
+
+        public async Task<long> AddRecord(Record record, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                context.Records.Add(record);
+                await context.SaveChangesAsync();
+                return record.Id;
+            }
+        }
         #endregion
 
         #region Users
 
-        public async Task<int> AddUserToTeam(User user, int tenantId)
+        public async Task<long> AddUserToTeam(User user, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {
@@ -165,7 +182,7 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
-        public async Task<int> UpdateUser(User model, int tenantId)
+        public async Task<long> UpdateUser(User model, int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {

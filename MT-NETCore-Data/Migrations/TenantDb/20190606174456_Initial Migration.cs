@@ -53,7 +53,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
                     UTCCreatedAt = table.Column<DateTime>(nullable: false),
@@ -78,7 +78,7 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Forms",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
                     UTCCreatedAt = table.Column<DateTime>(nullable: false),
@@ -88,10 +88,12 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                     Name = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     FormJson = table.Column<string>(nullable: true),
-                    ProjectId = table.Column<int>(nullable: false),
-                    NumberOFSubmissions = table.Column<long>(nullable: false),
-                    NumberOFApprovedSubmissions = table.Column<long>(nullable: false),
-                    NumberOFUnApprovedSubmissions = table.Column<long>(nullable: false)
+                    ProjectId = table.Column<long>(nullable: false),
+                    SubmissionCount = table.Column<long>(nullable: false),
+                    DeletedCount = table.Column<long>(nullable: false),
+                    ApprovedCount = table.Column<long>(nullable: false),
+                    RejectedCount = table.Column<long>(nullable: false),
+                    InvalidatedCount = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,19 +110,16 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
                     UTCCreatedAt = table.Column<DateTime>(nullable: false),
                     UTCModifiedAt = table.Column<DateTime>(nullable: true),
                     UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
-                    State = table.Column<string>(nullable: true),
-                    Latitude = table.Column<string>(nullable: true),
-                    Longitude = table.Column<string>(nullable: true),
-                    FormId = table.Column<int>(nullable: true)
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
+                    FormId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,17 +136,18 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Records",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
                     UTCCreatedAt = table.Column<DateTime>(nullable: false),
                     UTCModifiedAt = table.Column<DateTime>(nullable: true),
                     UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    FormId = table.Column<byte[]>(nullable: true),
-                    SubmissionJson = table.Column<string>(nullable: true),
-                    SubmissionPosition = table.Column<long>(nullable: false),
-                    LocationId = table.Column<int>(nullable: true)
+                    FormId = table.Column<long>(nullable: false),
+                    RecordJson = table.Column<string>(nullable: true),
+                    LocationId = table.Column<long>(nullable: true),
+                    UserId = table.Column<long>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,35 +164,23 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UpdatedBy = table.Column<string>(nullable: true),
                     UTCCreatedAt = table.Column<DateTime>(nullable: false),
                     UTCModifiedAt = table.Column<DateTime>(nullable: true),
                     UTCDeletedAt = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    BVNNumber = table.Column<string>(nullable: true),
-                    Gender = table.Column<string>(nullable: true),
-                    PrimaryLocationId = table.Column<int>(nullable: true),
-                    SecondaryLocationId = table.Column<int>(nullable: true),
-                    IdString = table.Column<string>(nullable: true),
-                    PhotoString = table.Column<string>(nullable: true),
+                    PrimaryLocationId = table.Column<long>(nullable: true),
+                    SecondaryLocationId = table.Column<long>(nullable: true),
                     TeamId = table.Column<int>(nullable: false),
                     Email = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true),
-                    FormId = table.Column<int>(nullable: true)
+                    UserRole = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Forms_FormId",
-                        column: x => x.FormId,
-                        principalTable: "Forms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Users_Locations_PrimaryLocationId",
                         column: x => x.PrimaryLocationId,
@@ -217,8 +205,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "FormUsers",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
-                    FormId = table.Column<int>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
+                    FormId = table.Column<long>(nullable: false),
                     UserRole = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -242,8 +230,8 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "ProjectUsers",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
+                    ProjectId = table.Column<long>(nullable: false),
                     UserRole = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -292,11 +280,6 @@ namespace MT_NetCore_Data.Migrations.TenantDb
                 name: "IX_Records_LocationId",
                 table: "Records",
                 column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_FormId",
-                table: "Users",
-                column: "FormId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_PrimaryLocationId",

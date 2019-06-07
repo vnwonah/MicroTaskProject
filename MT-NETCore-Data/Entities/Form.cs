@@ -17,13 +17,13 @@ namespace MT_NetCore_Data.Entities
         public List<Location> CollectionLocations { get; set; }
 
         [JsonProperty("project_id")]
-        public int ProjectId { get; set; }
+        public long ProjectId { get; set; }
         
-        public long NumberOFSubmissions { get; set; }
-
-        public long NumberOFApprovedSubmissions { get; set; }
-
-        public long NumberOFUnApprovedSubmissions { get; set; }
+        public long SubmissionCount { get; set; }
+        public long DeletedCount { get; set; }
+        public long ApprovedCount { get; set; }
+        public long RejectedCount { get; set; }
+        public long InvalidatedCount { get; set; }
         [JsonProperty("form_users")]
         public ICollection<FormUser> FormUsers { get; set; }
 

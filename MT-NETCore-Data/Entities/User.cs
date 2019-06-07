@@ -7,22 +7,11 @@ namespace MT_NetCore_Data.Entities
 {
     public class User : BaseEntity
     {
-        [JsonProperty("first_name")]
-        public string FirstName { get; set; }
-        [JsonProperty("last_name")]
-        public string LastName { get; set; }
-        [JsonProperty("bvn_number")]
-        public string BVNNumber { get; set; }
-        [JsonProperty("gender")]
-        public string Gender { get; set; }
         [JsonProperty("primary_location")]
         public Location PrimaryLocation { get; set; }
         [JsonProperty("secondary_location")]
         public Location SecondaryLocation { get; set; }
-        [JsonProperty("id_string")]
-        public string IdString { get; set; }
-        [JsonProperty("photo_string")]
-        public string PhotoString { get; set; }
+      
         [JsonProperty("team_id")]
         public int TeamId { get; set; }
         [JsonProperty("project_users")]

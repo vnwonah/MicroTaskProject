@@ -17,67 +17,35 @@ namespace MT_NetCore_Common.Interfaces
 
         #region Users
 
-        Task<int> AddUserToTeam(User user, int tenantId);
+        Task<long> AddUserToTeam(User user, int tenantId);
         Task<User> GetUserByEmailAsync(string email, int tenantId);
-        Task<int> UpdateUser(User model, int tenantId);
+        Task<long> UpdateUser(User model, int tenantId);
         Task<List<Project>> GetUserProjects(string email, int tenantId);
 
         #endregion
 
         #region Projects
 
-        Task<int> AddProjectToTeam(Project model, int tenantId);
-        Task<int> AddProjectUser(int userId, int projectId, int tenantId, Role role);
-        Task<Project> GetProjectById(int id, int tenantId);
+        Task<long> AddProjectToTeam(Project model, int tenantId);
+        Task<long> AddProjectUser(long userId, long projectId, int tenantId, Role role);
+        Task<Project> GetProjectById(long id, int tenantId);
 
         #endregion
 
         #region Forms
 
-        Task<int> AddFormToProject(Form model, int projectId, int tenantId);
-        Task<int> AddUserToForm(int userId, int formId, int tenantId, Role role);
-        Task<List<Form>> GetProjectForms(int projectId, int tenantId);
-        Task<List<Form>> GetProjectFormsForUserAsync(string email, int projectId, int tenantId);
+        Task<long> AddFormToProject(Form model, long projectId, int tenantId);
+        Task<long> AddUserToForm(long userId, long formId, int tenantId, Role role);
+        Task<List<Form>> GetProjectForms(long projectId, int tenantId);
+        Task<List<Form>> GetProjectFormsForUserAsync(string email, long projectId, int tenantId);
         Task<List<Form>> GetAllFormsForUser(string email, int tenantId);
+        Task<Form> GetFormForUserByFormId(long userId, long formId, int tenantId);
 
         #endregion
 
-        #region Events
+        #region Records
 
-        //Task<List<EventModel>> GetEventsForTenant(int tenantId);
-        //Task<EventModel> GetEvent(int eventId, int tenantId);
-
-        #endregion
-
-        #region Sections
-
-        //Task<List<SectionModel>> GetSections(List<int> sectionIds, int tenantId);
-        //Task<SectionModel> GetSection(int sectionId, int tenantId);
-
-        #endregion
-
-        #region TicketPurchases
-
-        //Task<int> AddTicketPurchase(TicketPurchaseModel ticketPurchaseModel, int tenantId);
-
-        #endregion
-
-        #region Tickets
-
-        //Task<bool> AddTickets(List<TicketModel> ticketModel, int tenantId);
-        //Task<int> GetTicketsSold(int sectionId, int eventId, int tenantId);
-
-        #endregion
-
-        #region Venues
-
-        //Task<VenuesModel> GetVenueDetails(int tenantId);
-
-        #endregion
-
-        #region VenueTypes
-
-        //Task<VenueTypeModel> GetVenueType(string venueType, int tenantId);
+        Task<long> AddRecord(Record record, int tenantId);
 
         #endregion
 
