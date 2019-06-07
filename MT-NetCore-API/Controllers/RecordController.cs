@@ -55,7 +55,8 @@ namespace MT_NetCore_API.Controllers
                         Latitude = model.Latitude,
                         Longitude = model.Longitude,
                     },
-                    UserId = user.Id
+                    UserId = user.Id,
+                    Message = "Submitted"
                 };
                 await _tenantRepository.AddRecord(record, TenantId);
                 return Ok();
