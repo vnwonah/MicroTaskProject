@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MT_NetCore_Data.Entities
 {
@@ -12,6 +12,7 @@ namespace MT_NetCore_Data.Entities
 
         public string UpdatedBy { get; set; }
 
+        [JsonProperty("created_at")]
         public DateTime UTCCreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UTCModifiedAt { get; set; }

@@ -172,11 +172,19 @@ namespace MT_NetCore_Common.Repositories
         {
             using (var context = CreateContext(tenantId))
             {
-                return await context.Records.Where(r => r.UserId == userId &&
-                                                        (r.Status == RecordStatus.Rejected ||
-                                                         r.Status == RecordStatus.Invalidated))
+                var records = await context.Records.Where(r => r.UserId == userId &&
+                                                        ((r.Status == RecordStatus.Rejected ||
+                                                         r.Status == RecordStatus.Invalidated)) && r.SentToDevice == false)
                     .Include(r => r.Location)
                     .ToListAsync();
+
+                foreach (var rec in records)
+                {
+                    rec.SentToDevice = true;
+                }
+
+                await context.SaveChangesAsync();
+                return records;
             }
         }
         #endregion

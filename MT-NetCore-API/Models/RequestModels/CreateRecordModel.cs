@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MT_NetCore_API.Models.RequestModels
 {
@@ -11,10 +12,12 @@ namespace MT_NetCore_API.Models.RequestModels
         [JsonProperty("form_id")]
         public long FormId { get; set; }
         [JsonProperty("response_json")]
-        public string ResponseJson { get; set; }
+        public JObject ResponseJson { get; set; }
         [JsonProperty("latitude")]
         public double Latitude { get; set; }
         [JsonProperty("longitude")]
         public double Longitude { get; set; }
+        [JsonProperty("title")]
+        public string LocalTitle { get; set; }
     }
 }
