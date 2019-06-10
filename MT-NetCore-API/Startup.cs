@@ -196,10 +196,12 @@ namespace MT_NetCore_API
                     Type = "apiKey"
                 });
 
-                var basePath = AppContext.BaseDirectory;
-                var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
-                var fileName = Path.GetFileName(assemblyName + ".xml");
-                options.IncludeXmlComments(System.IO.Path.Combine(basePath, fileName));
+                //TODO: Fix XML Comments
+
+                //var basePath = AppContext.BaseDirectory;
+                //var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+                //var fileName = Path.GetFileName(assemblyName + ".xml");
+                //options.IncludeXmlComments(System.IO.Path.Combine(basePath, fileName));
 
                 options.SchemaFilter<SchemaFilter>();
                 options.OperationFilter<HeaderFilter>();
