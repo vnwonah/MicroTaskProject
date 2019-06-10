@@ -217,6 +217,7 @@ namespace MT_NetCore_API
             services.AddSingleton(Configuration);
             services.AddSingleton<IRequestContext, RequestContextAdapter>();
             services.AddTransient<ICompressionSystem, GzipCompression>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
 
 
             //create instance of utilities class

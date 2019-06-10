@@ -7,9 +7,12 @@ using Microsoft.Extensions.Options;
 using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
+using MT_NetCore_API.Models.RequestModels;
 using MT_NetCore_API.Models.ResponseModels;
 using MT_NetCore_Common.Interfaces;
+using MT_NetCore_Data.Entities;
 using MT_NetCore_Data.IdentityDB;
+using MT_NetCore_Utils.Helpers;
 using Newtonsoft.Json;
 
 
@@ -26,19 +29,22 @@ namespace MT_NetCore_API.Controllers
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
         private readonly ITenantRepository _tenantRepository;
+        private readonly IUserService _userService;
 
         public UserController(
             UserManager<ApplicationUser> userManager,
             IOptions<JwtIssuerOptions> jwtOptions,
             IJwtFactory jwtFactory,
             IRequestContext requestContext,
-            ITenantRepository tenantRepository) : base(requestContext)
+            ITenantRepository tenantRepository,
+            IUserService userService) : base(requestContext)
         {
             
             _userManager = userManager;
             _jwtFactory = jwtFactory;
             _jwtOptions = jwtOptions.Value;
             _tenantRepository = tenantRepository;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -128,6 +134,43 @@ namespace MT_NetCore_API.Controllers
             });
         }
 
+        [HttpPost(nameof(AddUserToTeam))]
+        public async Task<IActionResult> AddUserToTeam(AddUserRequest model)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+
+            //check if user has account on system
+            var password = string.Empty;
+            var applicationUser = await _userManager.FindByEmailAsync(model.Email);
+            if (applicationUser == null)
+            {
+                applicationUser = new ApplicationUser{Email = model.Email, UserName = model.Email};
+                password = PasswordHelper.CreatePassword(7);
+               
+                var result = await _userManager.CreateAsync(applicationUser, password);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        ErrorDescription = "Your Email or Password is Incorrect"
+                    });
+                }
+
+                //email password to user
+            }
+            //we have an applicationUser
+            var teamUser = await _tenantRepository.GetUserByEmailAsync(model.Email, TenantId);
+            if (teamUser != null)
+                return new BadRequestObjectResult(new {error = "a user with that email already exists in this team"});
+            teamUser = new User
+            {
+                ApplicationUserId = applicationUser.Id, Email = model.Email, UserRole = model.Role
+            };
+            await _tenantRepository.AddUserToTeam(teamUser, TenantId);
+            return Ok(new {Message = $"advice user to check email for confirmation", password});
+        }
+
         private async Task<ClaimsIdentity> GetClaimsIdentity(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
@@ -147,6 +190,8 @@ namespace MT_NetCore_API.Controllers
             // Credentials are invalid, or account doesn't exist
             return await Task.FromResult<ClaimsIdentity>(null);
         }
+
+
 
     }
 }
