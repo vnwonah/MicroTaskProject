@@ -244,22 +244,18 @@ namespace MT_NetCore_API
             }
 
             app.UseExceptionHandler(
-                builder =>
-                {
-                    builder.Run(
-                        async context =>
+                builder => builder.Run(
+                    async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                        var error = context.Features.Get<IExceptionHandlerFeature>(); 
+                        if (error != null)
                         {
-                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                            var error = context.Features.Get<IExceptionHandlerFeature>(); 
-                            if (error != null)
-                            {
-                                //context.Response.AddApplicationError(error.Error.Message);
-                                await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
-                                }
-                            });
-                         }
-               );
+                            //context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                        }
+                    }));
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
