@@ -40,7 +40,7 @@ namespace MT_NetCore_Common.Interfaces
         Task<List<Form>> GetProjectFormsForUserAsync(string email, long projectId, int tenantId);
         Task<List<Form>> GetAllFormsForUser(string email, int tenantId);
         Task<Form> GetFormForUserByFormId(long userId, long formId, int tenantId);
-
+        Task<Form> GetFormById(long formId, int tenantId);
         #endregion
 
         #region Records

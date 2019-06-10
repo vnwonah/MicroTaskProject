@@ -92,6 +92,14 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
+        public async Task<Form> GetFormById(long formId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                return await context.Forms.FirstOrDefaultAsync(f => f.Id == formId);
+            }
+        }
+
         public async Task<long> AddUserToForm(long userId, long formId, int tenantId, Role role)
         {
             using (var context = CreateContext(tenantId))

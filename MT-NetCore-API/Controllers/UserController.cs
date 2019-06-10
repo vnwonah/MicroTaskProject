@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -135,7 +136,7 @@ namespace MT_NetCore_API.Controllers
         }
 
         [HttpPost(nameof(AddUserToTeam))]
-        public async Task<IActionResult> AddUserToTeam(AddUserRequest model)
+        public async Task<IActionResult> AddUserToTeam(AddUserRequestModel model)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -171,6 +172,36 @@ namespace MT_NetCore_API.Controllers
             return Ok(new {Message = $"advice user to check email for confirmation", password});
         }
 
+        [HttpPost(nameof(AddUserToProject))]
+        public async Task<IActionResult> AddUserToProject(AddUserRequestModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+            var projects = await _tenantRepository.GetUserProjects(model.Email, TenantId);
+            if (projects != null && projects.Any())
+                return BadRequest($"user {model.Email} already in project");
+            var user = await _tenantRepository.GetUserByEmailAsync(model.Email, tenantId: TenantId);
+            if (user == null)
+                return BadRequest("this user does not exist on team");
+            await _tenantRepository.AddProjectUser(user.Id, model.Id, TenantId, model.Role);
+            return new OkObjectResult(new {Message = $"User {model.Email} added to project {model.Id}"});
+        }
+
+        private async Task<IActionResult> AddUserToForm(AddUserRequestModel model)
+        {
+            
+            if (!ModelState.IsValid) return BadRequest();
+            var user = await _tenantRepository.GetUserByEmailAsync(model.Email, TenantId);
+            if (user == null) return BadRequest("user does not exist on team");
+            var form = await _tenantRepository.GetFormById(model.Id, TenantId);
+            if (form == null) return BadRequest("no forms with this Id exists!");
+            var projects = await _tenantRepository.GetUserProjects(model.Email, tenantId: TenantId);
+            if (!projects.Any(p => p.Forms.Contains(form)))
+                return BadRequest("user does not have access to this project!");
+            await _tenantRepository.AddUserToForm(user.Id, model.Id, tenantId: TenantId, model.Role);
+            return Ok();
+
+        }
+
         private async Task<ClaimsIdentity> GetClaimsIdentity(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
@@ -190,7 +221,6 @@ namespace MT_NetCore_API.Controllers
             // Credentials are invalid, or account doesn't exist
             return await Task.FromResult<ClaimsIdentity>(null);
         }
-
 
 
     }

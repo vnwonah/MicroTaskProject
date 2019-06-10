@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using MT_NetCore_Utils.Enums;
+﻿using MT_NetCore_Utils.Enums;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace MT_NetCore_API.Models.RequestModels
 {
-    public class AddUserRequest
+    public class AddUserRequestModel
     {
         [Required]
         [JsonProperty("email")]
