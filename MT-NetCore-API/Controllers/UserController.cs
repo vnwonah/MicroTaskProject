@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MT_NetCore_API.Helpers;
 using MT_NetCore_API.Interfaces;
@@ -31,6 +32,7 @@ namespace MT_NetCore_API.Controllers
         private readonly JwtIssuerOptions _jwtOptions;
         private readonly ITenantRepository _tenantRepository;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration; 
 
         public UserController(
             UserManager<ApplicationUser> userManager,
@@ -38,7 +40,8 @@ namespace MT_NetCore_API.Controllers
             IJwtFactory jwtFactory,
             IRequestContext requestContext,
             ITenantRepository tenantRepository,
-            IUserService userService) : base(requestContext)
+            IUserService userService,
+            IConfiguration configuration) : base(requestContext)
         {
             
             _userManager = userManager;
@@ -46,6 +49,24 @@ namespace MT_NetCore_API.Controllers
             _jwtOptions = jwtOptions.Value;
             _tenantRepository = tenantRepository;
             _userService = userService;
+            _configuration = configuration;
+        }
+
+        [AllowAnonymous]
+        [HttpPost(nameof(ApplicationLogin))]
+        public async Task<IActionResult> ApplicationLogin(ApplicationLoginModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+            var key = _configuration[$"RegisteredApplications:{model.AppName}"];
+            if (key != model.AppKey) return BadRequest();
+
+            var jwt = await Tokens.GenerateJwt(await GetAppClaimsIdentity(model.AppName, key), _jwtFactory, model.AppName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
+
+            return Ok(new LoginResponse
+            {
+                Token = jwt
+            });
+
         }
 
         [AllowAnonymous]
@@ -220,6 +241,16 @@ namespace MT_NetCore_API.Controllers
 
             // Credentials are invalid, or account doesn't exist
             return await Task.FromResult<ClaimsIdentity>(null);
+        }
+
+        private async Task<ClaimsIdentity> GetAppClaimsIdentity(string appname, string appkey)
+        {
+            if (string.IsNullOrEmpty(appname) || string.IsNullOrEmpty(appkey))
+                return await Task.FromResult<ClaimsIdentity>(null);
+
+            // get the user to verifty
+
+            return await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(appname, appkey));
         }
 
 
