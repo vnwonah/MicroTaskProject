@@ -157,7 +157,7 @@ namespace MT_NetCore_Common.Repositories
         {
             using(var context = CreateContext(tenantId))
             {
-                context.Attach(form);
+                context.Forms.Update(form);
                 await context.SaveChangesAsync();
             }
         } 
