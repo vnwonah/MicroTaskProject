@@ -207,6 +207,7 @@ namespace MT_NetCore_API.Controllers
             return new OkObjectResult(new {Message = $"User {model.Email} added to project {model.Id}"});
         }
 
+        [HttpPost(nameof(AddUserToForm))]
         private async Task<IActionResult> AddUserToForm(AddUserRequestModel model)
         {
             

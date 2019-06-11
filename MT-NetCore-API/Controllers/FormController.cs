@@ -63,31 +63,47 @@ namespace MT_NetCore_API.Controllers
             return NoContent();
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> UpdateForm(UpdateFormModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                //update form
+                var form = await _tenantRepository.GetFormById(model.FormId, TenantId);
+                if (form == null) return NotFound();
+                form.FormJson = model.FormJson.ToString();
+                await _tenantRepository.UpdateFormAsync(form, TenantId);
+                return Ok(new { id = form.Id, form_title = form.Title });
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateFormModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
             {
-                try
-                {
-                    var form = new Form { Name = model.FormName, FormJson = model.FormJson.ToString()};
 
-                    var formId = await _tenantRepository.AddFormToProject(form, model.ProjectId, TenantId);
+                var form = new Form { Name = model.FormName, FormJson = model.FormJson.ToString(), Title = model.FormTitle };
 
-                    var user = await _userService.GetCurrentUserAsync(TenantId);
+                var formId = await _tenantRepository.AddFormToProject(form, model.ProjectId, TenantId);
 
-                    await _tenantRepository.AddUserToForm(user.Id, formId, TenantId, Role.SuperAdministrator);
+                var user = await _userService.GetCurrentUserAsync(TenantId);
 
-                    return Ok(new { id = formId, form_name = model.FormName });
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(new { ex.Message });
-                }
+                await _tenantRepository.AddUserToForm(user.Id, formId, TenantId, Role.SuperAdministrator);
 
+                return Ok(new { id = formId, form_title = model.FormTitle });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
             }
 
-            return BadRequest(ModelState);
         }
     }
 }

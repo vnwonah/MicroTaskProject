@@ -21,5 +21,13 @@ namespace MT_NetCore_API.Models.RequestModels
         [Required]
         [JsonProperty("form_json")]
         public JObject FormJson { get; set; }
+
+        [Required]
+        [JsonProperty("form_id")]
+        public long FormId { get; set; }
+
+        [Required]
+        [JsonProperty("form_title")]
+        public string FormTitle { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
@@ -96,8 +97,10 @@ namespace MT_NetCore_Common.Repositories
         {
             using (var context = CreateContext(tenantId))
             {
-                return await context.Forms.FirstOrDefaultAsync(f => f.Id == formId);
+                var form = await context.Forms.FirstOrDefaultAsync(f => f.Id == formId);
+                return form;
             }
+
         }
 
         public async Task<long> AddUserToForm(long userId, long formId, int tenantId, Role role)
@@ -149,6 +152,15 @@ namespace MT_NetCore_Common.Repositories
                 return forms;
             }
         }
+
+        public async Task UpdateFormAsync(Form form, int tenantId)
+        {
+            using(var context = CreateContext(tenantId))
+            {
+                context.Attach(form);
+                await context.SaveChangesAsync();
+            }
+        } 
 
 
 

@@ -41,6 +41,7 @@ namespace MT_NetCore_Common.Interfaces
         Task<List<Form>> GetAllFormsForUser(string email, int tenantId);
         Task<Form> GetFormForUserByFormId(long userId, long formId, int tenantId);
         Task<Form> GetFormById(long formId, int tenantId);
+        Task UpdateFormAsync(Form form, int tenantId);
         #endregion
 
         #region Records
