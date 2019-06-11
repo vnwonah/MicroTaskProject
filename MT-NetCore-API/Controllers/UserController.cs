@@ -219,7 +219,7 @@ namespace MT_NetCore_API.Controllers
             var projects = await _tenantRepository.GetUserProjects(model.Email, tenantId: TenantId);
             if (!projects.Any(p => p.Forms.Contains(form)))
                 return BadRequest("user does not have access to this project!");
-            await _tenantRepository.AddUserToForm(user.Id, model.Id, tenantId: TenantId, model.Role);
+            await _tenantRepository.AddUserToForm(user.Id, model.Id, TenantId, model.Role);
             return Ok();
 
         }
