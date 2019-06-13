@@ -86,12 +86,10 @@ namespace MT_NetCore_API.Controllers
 
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
-            if (!result.Succeeded) 
+            if (!result.Succeeded)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    ErrorDescription = "Your Email or Password is Incorrect"
-                });
+                //if(result.Errors.Any(e => e.Code == ))
+                return BadRequest();
             }
             return Ok(new RegisterResponse
             {
