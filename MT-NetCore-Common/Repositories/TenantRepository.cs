@@ -21,16 +21,13 @@ namespace MT_NetCore_Common.Repositories
     {
         private readonly string _connectionString;
         private readonly IConfiguration _configuration;
-        private readonly AuthenticationDbContext _authContext;
 
         public TenantRepository(
             string connectionString,
-            IConfiguration configuration,
-            AuthenticationDbContext authContext)
+            IConfiguration configuration)
         {
             _connectionString = connectionString;
             _configuration = configuration;
-            _authContext = authContext;
         }
 
         private TenantDbContext CreateContext(int tenantId)
@@ -251,16 +248,7 @@ namespace MT_NetCore_Common.Repositories
         {
             using (var context = CreateContext(tenantId))
             {
-                var userList = new List<ApplicationUser>();
-
-                var users = await context.Users.ToListAsync();
-                foreach (var user in users)
-                {
-                    var currentUser = _authContext.Users.Where(x => x.Id == user.ApplicationUserId).FirstOrDefault();
-                    userList.Add(currentUser);
-                }
-
-                return userList;
+                return await context.Users.ToListAsync();
             }
         }
 
