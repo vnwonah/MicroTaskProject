@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using MT_NetCore_Common.Interfaces;
 using MT_NetCore_Common.Utilities;
 using MT_NetCore_Data.Entities;
+using MT_NetCore_Data.IdentityDB;
 using MT_NetCore_Data.TenantsDB;
 using MT_NetCore_Utils.Enums;
 using Newtonsoft.Json;
@@ -20,13 +21,16 @@ namespace MT_NetCore_Common.Repositories
     {
         private readonly string _connectionString;
         private readonly IConfiguration _configuration;
+        private readonly AuthenticationDbContext _authContext;
 
         public TenantRepository(
             string connectionString,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            AuthenticationDbContext authContext)
         {
             _connectionString = connectionString;
             _configuration = configuration;
+            _authContext = authContext;
         }
 
         private TenantDbContext CreateContext(int tenantId)
@@ -243,6 +247,22 @@ namespace MT_NetCore_Common.Repositories
         }
         #endregion
 
+        public async Task<object> GetTeamUsers(int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                var userList = new List<ApplicationUser>();
+
+                var users = await context.Users.ToListAsync();
+                foreach (var user in users)
+                {
+                    var currentUser = _authContext.Users.Where(x => x.Id == user.ApplicationUserId).FirstOrDefault();
+                    userList.Add(currentUser);
+                }
+
+                return userList;
+            }
+        }
 
         public async Task<Team> AddTeam(Team team)
         {

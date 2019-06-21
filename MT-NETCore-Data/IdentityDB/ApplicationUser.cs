@@ -18,6 +18,7 @@ namespace MT_NetCore_Data.IdentityDB
         public string IdString { get; set; }
         [JsonProperty("photo_string")]
         public string PhotoString { get; set; }
+        [JsonProperty("address")]
         public string Address { get; set; }
     }
 }
