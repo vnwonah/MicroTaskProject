@@ -205,6 +205,34 @@ namespace MT_NetCore_API.Controllers
             return new OkObjectResult(new {Message = $"User {model.Email} added to project {model.Id}"});
         }
 
+        [HttpPatch(nameof(UpdatePaymentDetails))]
+        public async Task<IActionResult> UpdatePaymentDetails(UpdatePaymentDetailsRequestModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = await _userService.GetCurrentUserAsync(TenantId);
+            if (user == null) return BadRequest();
+
+            var identity = await GetClaimsIdentity(user.Email, model.Password);
+
+            if (identity == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    ErrorDescription = "Your Email or Password is Incorrect"
+                });
+            }
+
+            user.AccountNumber = model.AccountNumber;
+            user.BankName = model.BankName;
+
+            await _tenantRepository.UpdateUser(user, TenantId);
+
+            return Ok();
+
+
+        }
+
         [HttpPost(nameof(AddUserToForm))]
         private async Task<IActionResult> AddUserToForm(AddUserRequestModel model)
         {
