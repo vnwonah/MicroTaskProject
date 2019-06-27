@@ -35,7 +35,7 @@ namespace MT_NetCore_Data.Entities
         [JsonProperty("application_user_id")]
         public string ApplicationUserId { get; set; }
         public Role UserRole { get; set; }
-        public int AccountNumber { get; set; }
+        public long AccountNumber { get; set; }
         public string BankName { get; set; }
     }
 

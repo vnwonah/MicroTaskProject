@@ -7,7 +7,7 @@ namespace MT_NetCore_API.Models.RequestModels
     {
         [Required]
         [JsonProperty("account_number")]
-        public int AccountNumber { get; set; }
+        public long AccountNumber { get; set; }
 
         [Required]
         [JsonProperty("bank_name")]
