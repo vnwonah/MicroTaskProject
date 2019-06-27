@@ -237,7 +237,7 @@ namespace MT_NetCore_Common.Repositories
         {
             using (var context = CreateContext(tenantId))
             {
-                context.Users.Attach(model);
+                context.Users.Update(model);
                 var res = await context.SaveChangesAsync();
                 return model.Id;
             }
