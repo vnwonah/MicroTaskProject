@@ -205,6 +205,32 @@ namespace MT_NetCore_API.Controllers
             return new OkObjectResult(new {Message = $"User {model.Email} added to project {model.Id}"});
         }
 
+        [HttpPatch(nameof(ChangePassword))]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequestModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (model.NewPassword != model.ConfirmNewPassword) return BadRequest();
+
+            var user = await _userService.GetCurrentUserAsync(TenantId);
+            if (user == null) return BadRequest();
+
+            var identity = await GetClaimsIdentity(user.Email, model.Password);
+
+            if (identity == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    ErrorDescription = "Your Password is Incorrect"
+                });
+            }
+
+            var identityUser = await _userService.GetApplicationUserAsync();
+            var res = await _userManager.ChangePasswordAsync(identityUser, model.Password, model.NewPassword);
+            if (!res.Succeeded)
+                return BadRequest();
+            return Ok();
+        }
+
         [HttpPatch(nameof(UpdateIdentityDetails))]
         public async Task<IActionResult> UpdateIdentityDetails(UpdateIdentityDetailsRequestModel model)
         {
