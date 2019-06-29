@@ -10,8 +10,8 @@ namespace MT_NetCore_Data.Entities
         public string FirstName { get; set; }
         [JsonProperty("last_name")]
         public string LastName { get; set; }
-        [JsonProperty("bvn_number")]
-        public string BVNNumber { get; set; }
+        [JsonProperty("identity_number")]
+        public string IdentityNumber { get; set; }
         [JsonProperty("gender")]
         public string Gender { get; set; }
         [JsonProperty("id_string")]
