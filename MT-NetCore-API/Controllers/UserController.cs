@@ -280,8 +280,35 @@ namespace MT_NetCore_API.Controllers
             await _tenantRepository.UpdateUser(user, TenantId);
 
             return Ok();
+        }
 
+        [HttpPatch(nameof(UpdateProfile))]
+        public async Task<IActionResult> UpdateProfile(UpdateProfileRequestModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            var user = await _userService.GetCurrentUserAsync(TenantId);
+            if (user == null) return BadRequest();
+
+            var identity = await GetClaimsIdentity(user.Email, model.Password);
+
+            if (identity == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    ErrorDescription = "Your Password is Incorrect"
+                });
+            }
+
+            user.PhotoString = model.PhotoString;
+            user.Address = model.Address;
+            user.State = model.State;
+            user.Gender = model.Gender;
+            user.Country = model.Country;
+
+            await _tenantRepository.UpdateUser(user, TenantId);
+
+            return Ok();
         }
 
         [HttpPost(nameof(AddUserToForm))]
