@@ -37,6 +37,9 @@ namespace MT_NetCore_Data.Entities
         public Role UserRole { get; set; }
         public long AccountNumber { get; set; }
         public string BankName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Country { get; set; }
+        public string State { get; set; }
     }
 
 
