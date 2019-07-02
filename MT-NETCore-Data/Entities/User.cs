@@ -40,6 +40,8 @@ namespace MT_NetCore_Data.Entities
         public string PhoneNumber { get; set; }
         public string Country { get; set; }
         public string State { get; set; }
+        public bool IsActive { get; set; }
+
     }
 
 

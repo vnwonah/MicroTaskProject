@@ -42,6 +42,7 @@ namespace MT_NetCore_Common.Interfaces
         Task<Form> GetFormForUserByFormId(long userId, long formId, int tenantId);
         Task<Form> GetFormById(long formId, int tenantId);
         Task UpdateFormAsync(Form form, int tenantId);
+        Task<List<User>> GetFormUsers(long formId, int tenantId);
         #endregion
 
         #region Records
@@ -49,6 +50,8 @@ namespace MT_NetCore_Common.Interfaces
         Task<long> AddRecord(Record record, int tenantId);
         Task<long> UpdateRecordStatus(long recordId, RecordStatus status, string message, int tenantId);
         Task<List<Record>> GetRejectedAndInvalidatedRecordsForUser(long userId, int tenantId);
+        Task<List<Record>> GetRecordsForForm(long formId, int tenantId);
+        Task<Record> GetRecordById(long recordId, int tenantId);
 
         #endregion
 

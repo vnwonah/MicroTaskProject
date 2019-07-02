@@ -27,6 +27,10 @@ namespace MT_NetCore_Data.Entities
         [JsonProperty("form_users")]
         public ICollection<FormUser> FormUsers { get; set; }
 
+        public long MaxNumberOfAgents { get; set; }
+        public double PricePerResponse { get; set; }
+        public string Description { get; set; }
+
     }
 
 }

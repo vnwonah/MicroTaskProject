@@ -35,6 +35,22 @@ namespace MT_NetCore_API.Controllers
             _compressionSystem = compressionSystem;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get(long formId)
+        {
+            if (formId == 0) return BadRequest();
+            var form = await _tenantRepository.GetFormById(formId, TenantId);
+            return Ok(form);
+        }
+        
+        [HttpGet(nameof(GetFormUsers))]
+        public async Task<IActionResult> GetFormUsers(long formId)
+        {
+            if (formId == 0) return BadRequest();
+            var users = await _tenantRepository.GetFormUsers(formId, TenantId);
+            return Ok(users);
+        }
+
         [HttpGet("GetAllFormsForUser")]
         public async Task<IActionResult> GetAllForms()
         {

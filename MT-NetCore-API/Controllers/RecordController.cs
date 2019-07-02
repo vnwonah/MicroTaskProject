@@ -32,6 +32,21 @@ namespace MT_NetCore_API.Controllers
             _tenantRepository = tenantRepository;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get(int recordid)
+        {
+            if (recordid == 0) return BadRequest();
+            var record = await _tenantRepository.GetRecordById(recordid, TenantId);
+            return Ok(record);
+        }
+        [HttpGet(nameof(GetRecordsForFormId))]
+        public async Task<IActionResult> GetRecordsForFormId(long formId)
+        {
+            if (formId == 0) return BadRequest();
+            var records = await _tenantRepository.GetRecordsForForm(formId, TenantId);
+            return Ok(records);
+        }
+
         [HttpGet("GetRejectedAndInvalidatedRecordsForUser")]
         public async Task<IActionResult> GetRejectedAndInvalidatedRecordsForUser()
         {

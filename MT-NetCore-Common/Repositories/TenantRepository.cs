@@ -134,6 +134,14 @@ namespace MT_NetCore_Common.Repositories
             }
         }
 
+        public async Task<List<User>> GetFormUsers(long formId, int tenantId)
+        {
+            using(var context = CreateContext(tenantId))
+            {
+                return await context.Users.Where(u => u.FormUsers.Any(f => f.FormId == formId)).ToListAsync();
+            }
+        }
+
         public async Task<List<Form>> GetProjectForms(long projectId, int tenantId)
         {
             using (var context = CreateContext(tenantId))
@@ -186,6 +194,22 @@ namespace MT_NetCore_Common.Repositories
                 await context.Database.ExecuteSqlCommandAsync(
                     $"EXEC sp_UpdateRecordStatus {recordId}, {status}, {message}");
                 return recordId;
+            }
+        }
+
+        public async Task<List<Record>> GetRecordsForForm(long formId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                return await context.Records.Where(r => r.FormId == formId).ToListAsync();
+            }
+        }
+
+        public async Task<Record> GetRecordById(long recordId, int tenantId)
+        {
+            using (var context = CreateContext(tenantId))
+            {
+                return await context.Records.FirstOrDefaultAsync(r => r.Id == recordId);
             }
         }
 
