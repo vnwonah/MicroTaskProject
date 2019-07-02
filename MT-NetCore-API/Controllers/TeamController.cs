@@ -43,6 +43,13 @@ namespace MT_NetCore_API.Controllers
             _catalogRepository = catalogRepository;
             _tenantRepository = tenantRepository;
         }
+
+        [HttpGet(nameof(GetUsers))]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _tenantRepository.GetTeamUsers(TenantId);
+            return Ok(users);
+        }
       
 
         [HttpGet]
