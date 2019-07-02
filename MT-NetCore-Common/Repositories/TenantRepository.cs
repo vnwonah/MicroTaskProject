@@ -268,7 +268,7 @@ namespace MT_NetCore_Common.Repositories
         }
         #endregion
 
-        public async Task<object> GetTeamUsers(int tenantId)
+        public async Task<List<User>> GetTeamUsers(int tenantId)
         {
             using (var context = CreateContext(tenantId))
             {

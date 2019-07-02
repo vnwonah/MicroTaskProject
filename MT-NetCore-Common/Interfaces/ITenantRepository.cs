@@ -21,7 +21,7 @@ namespace MT_NetCore_Common.Interfaces
         Task<User> GetUserByEmailAsync(string email, int tenantId);
         Task<long> UpdateUser(User model, int tenantId);
         Task<List<Project>> GetUserProjects(string email, int tenantId);
-        Task<object> GetTeamUsers(int tenantId);
+        Task<List<User>> GetTeamUsers(int tenantId);
 
         #endregion
 
