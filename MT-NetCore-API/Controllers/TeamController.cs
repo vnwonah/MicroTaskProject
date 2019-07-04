@@ -61,6 +61,14 @@ namespace MT_NetCore_API.Controllers
             return NotFound();
         }
 
+        [HttpGet(nameof(GetTenantKey))]
+        public IActionResult GetTenantKey(string teamname)
+        {
+            if (string.IsNullOrWhiteSpace(teamname)) return BadRequest();
+            var tenantId = _utilities.GetTenantKey(teamname);
+            return Ok(new { tenant_id = tenantId });
+        }
+
 
         // POST api/values
         [HttpPost]
