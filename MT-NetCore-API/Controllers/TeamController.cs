@@ -61,6 +61,7 @@ namespace MT_NetCore_API.Controllers
             return NotFound();
         }
 
+        [AllowAnonymous]
         [HttpGet(nameof(GetTenantKey))]
         public IActionResult GetTenantKey(string teamname)
         {
