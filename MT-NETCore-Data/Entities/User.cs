@@ -10,6 +10,18 @@ namespace MT_NetCore_Data.Entities
         public string FirstName { get; set; }
         [JsonProperty("last_name")]
         public string LastName { get; set; }
+        [JsonProperty("full_name")]
+        public string FullName
+        {
+            get
+            {
+                if(FirstName!=null && LastName != null)
+                {
+                    return FirstName + " " + LastName;
+                }
+                return string.Empty;
+            }
+        }
         [JsonProperty("identity_number")]
         public string IdentityNumber { get; set; }
         [JsonProperty("gender")]

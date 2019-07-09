@@ -116,10 +116,13 @@ namespace MT_NetCore_API.Controllers
                     });
                 }
                 var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, model.Email, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
-
+                var user = await _tenantRepository.GetUserByEmailAsync(model.Email, TenantId);
                 return Ok(new LoginResponse
                 {
-                    Token = jwt
+                    Token = jwt,
+                    Email = model.Email,
+                    UserName = user.FullName,
+                    PhotoString = user.PhotoString
                 });
             }
 
@@ -274,8 +277,8 @@ namespace MT_NetCore_API.Controllers
                 });
             }
 
-            user.AccountNumber = model.AccountNumber;
-            user.BankName = model.BankName;
+            //user.AccountNumber = model.AccountNumber;
+            //user.BankName = model.BankName;
 
             await _tenantRepository.UpdateUser(user, TenantId);
 
