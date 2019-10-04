@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using MT_NetCore_API.Interfaces;
+﻿using MT_NetCore_API.Interfaces;
 using MT_NetCore_API.Models.AuthModels;
 using Newtonsoft.Json;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MT_NetCore_API.Helpers
 {
